@@ -67,7 +67,6 @@ MCMCconf$getMonitors()
 
 # Daqui para baixo o código continua igual:
 modelo_MCMC <- buildMCMC(MCMCconf)
-printErrors()
 Cmodelo <- compileNimble(modelo)
 Cmodelo_MCMC <- compileNimble(modelo_MCMC, project = modelo)
 
