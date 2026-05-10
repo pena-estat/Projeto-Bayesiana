@@ -22,11 +22,11 @@ O conjunto de dados é amplamente utilizado em estudos de regressão linear por 
 
 A escolha desse banco foi motivada pelos seguintes fatores:
 
-- A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
-- As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
-- Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
-- O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
-- É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
+-   A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
+-   As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
+-   Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
+-   O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
+-   É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
 
 #### Carregamento do Banco de Dados
 
@@ -148,27 +148,27 @@ A escolha dos hiperparâmetros foi feita de forma **pouco informativa**, permiti
 
 ### Justificativas das escolhas
 
-- **(m = 0)**:
+-   **(m = 0)**:
 
 Foi adotada média a priori igual a zero para todos os coeficientes, indicando ausência de conhecimento prévio específico sobre direção ou magnitude dos efeitos das covariáveis sobre as vendas.
 
-- **(V = 100\^2 = 10000)**:
+-   **(V = 100\^2 = 10000)**:
 
 Um valor elevado para a variância a priori torna a distribuição dos coeficientes bastante dispersa, caracterizando uma priori vaga (não informativa).
 
-- **(a = 0,001) e (d = 0,001)**:
+-   **(a = 0,001) e (d = 0,001)**:
 
 Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori difusa para a variância dos erros, apropriada quando não se possui informação prévia sólida sobre a variabilidade do modelo.
 
 ### Tabela resumo das prioris adotadas
 
-| Parâmetro | Distribuição a priori | Hiperparâmetros escolhidos | Média a priori | Variância a priori |
+| Parâmetro  | Distribuição a priori      | Hiperparâmetros escolhidos | Média a priori                                       | Variância a priori                                     |
 |---------------|---------------|---------------|---------------|---------------|
-| $\beta_0$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
-| $\beta_1$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
-| $\beta_2$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
-| $\beta_3$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
-| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=0{,}001,\; d=0{,}001$ | $\text{Não Informativa}$ <br> $\text{Priori Difusa}$ | $\text{Muito elevada}$ <br> $\text{Pouco informativa}$ |
+| $\beta_0$  | $Normal(m, V\sigma^2)$     | $m=0,\; V=10000$           | $0$                                                  | $10000\sigma^2$                                        |
+| $\beta_1$  | $Normal(m, V\sigma^2)$     | $m=0,\; V=10000$           | $0$                                                  | $10000\sigma^2$                                        |
+| $\beta_2$  | $Normal(m, V\sigma^2)$     | $m=0,\; V=10000$           | $0$                                                  | $10000\sigma^2$                                        |
+| $\beta_3$  | $Normal(m, V\sigma^2)$     | $m=0,\; V=10000$           | $0$                                                  | $10000\sigma^2$                                        |
+| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=0{,}001,\; d=0{,}001$   | $\text{Não Informativa}$ <br> $\text{Priori Difusa}$ | $\text{Muito elevada}$ <br> $\text{Pouco informativa}$ |
 
 #### e) Ajuste o modelo Bayesiano utilizando o pacote `Nimble`, considerando a distribuição a priori conjugada natural especificada no item (d), e obtenha a distribuição a posteriori dos parâmetros.
 
@@ -197,6 +197,7 @@ modelo_constantes <- list(
 ```
 
 ```{r}
+set.seed(28126)
 modelo_inits <- list(
   inits1 = list(beta = runif(4,-10,10), sigma2 = 1),
   inits2 = list(beta = runif(4,-50,50), sigma2 = 99)
@@ -228,7 +229,7 @@ modelo_res <- runMCMC(Cmodelo_MCMC, niter = 10000,
                       samplesAsCodaMCMC = TRUE,
                       setSeed = c(2312312*1,123332*2),
                       nchains=2,
-                      nburnin=1000)
+                      nburnin=0)
 ```
 
 ```{r}
@@ -274,39 +275,50 @@ resultado_posterior
 
 ### Resumo da distribuição a posteriori dos parâmetros
 
-| Parâmetro | Média a posteriori | Moda a posteriori | Variância a posteriori | LI (2,5%) | LS (97,5%) |
+| Parâmetro  | Média a posteriori | Moda a posteriori | Variância a posteriori | LI (2,5%)   | LS (97,5%) |
 |------------|------------|------------|------------|------------|------------|
-| $\beta_0$ | 2.945575879 | 2.9535536568 | 9.613677e-02 | 2.33966872 | 3.56194445 |
-| $\beta_1$ | 0.045749929 | 0.0455893516 | 1.887501e-06 | 0.04303955 | 0.04839467 |
-| $\beta_2$ | 0.188364488 | 0.1904802205 | 7.551470e-05 | 0.17114260 | 0.20519452 |
-| $\beta_3$ | -0.001029252 | -0.0005671229 | 3.422312e-05 | -0.01267426 | 0.01028797 |
-| $\sigma^2$ | 2.816054885 | 2.7616979073 | 8.187717e-02 | 2.31666109 | 3.43587748 |
+| $\beta_0$  | 2.945575879        | 2.9535536568      | 9.613677e-02           | 2.33966872  | 3.56194445 |
+| $\beta_1$  | 0.045749929        | 0.0455893516      | 1.887501e-06           | 0.04303955  | 0.04839467 |
+| $\beta_2$  | 0.188364488        | 0.1904802205      | 7.551470e-05           | 0.17114260  | 0.20519452 |
+| $\beta_3$  | -0.001029252       | -0.0005671229     | 3.422312e-05           | -0.01267426 | 0.01028797 |
+| $\sigma^2$ | 2.816054885        | 2.7616979073      | 8.187717e-02           | 2.31666109  | 3.43587748 |
 
 ### Análise e interpretação dos resultados
 
-- **Intercepto (**$\beta_0$):
+-   **Intercepto (**$\beta_0$):
 
-  O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
+    O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
 
-- **TV (**$\beta_1$):
+-   **TV (**$\beta_1$):
 
-  O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
+    O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
 
-- **Rádio (**$\beta_2$):
+-   **Rádio (**$\beta_2$):
 
-  Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
+    Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
 
-- **Jornal (**$\beta_3$):
+-   **Jornal (**$\beta_3$):
 
-  O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
+    O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
 
-- **Variância dos erros (**$\sigma^2$):
+-   **Variância dos erros (**$\sigma^2$):
 
-  A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
+    A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
 
 ### Conclusão
 
 Os resultados Bayesianos indicam que os investimentos em **TV** e **Rádio** são relevantes para explicar a variável resposta `Sales`, enquanto o investimento em **Jornal** não apresenta evidência clara de contribuição significativa. As distribuições a posteriori mostram estabilidade entre média e moda, sugerindo boa convergência e consistência das estimativas obtidas via MCMC.
+
+#### f) Obtenha as estimativas de mínimos quadrados para todos os parâmetros do modelo
+
+```{r}
+mod <- lm(Vendas ~ 1 + TV + Radio + Jornal,ads)
+summary(mod)
+```
+
+#### g) Analise e compare os resultados obtidos usando os métodos clássico (item (f) ) e Bayesiano (item (e) )
+
+#### h) Construa uma distribuição a priori conjugada natural para cada parâmetro assumindo que suas médias a priori sejam as estimativas de mínimos quadrados obtidas. Ajuste o modelo com esta nova informação a priori e compare os resultados a posteriori com os resultados obtidos no item (e). Conclua.
 
 ## Apêndice A — Diagnóstico de convergência das cadeias MCMC
 
