@@ -1,0 +1,58 @@
+---
+title: "Relatório"
+format: html
+editor: visual
+---
+
+### Carregamento do Datasest
+
+```{r}
+ads <- read.csv("data/Advertising_Budget_and_Sales.csv")
+nomes <- c("X","TV","Radio","Jornal","Vendas")
+names(ads) <- nomes
+```
+
+### Correlação
+
+```{r}
+correlacoes <- cor(ads[, c("Vendas", "TV", "Radio", "Jornal")])
+print(correlacoes)
+```
+
+### Gráficos de Dispersão
+
+```{r}
+ggplot(ads, aes(x = TV, y = Vendas)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  theme_minimal() +
+  labs(title = "Relação: Investimento em TV vs Vendas")
+
+ggplot(ads, aes(x = Radio, y = Vendas)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  theme_minimal() +
+  labs(title = "Relação: Investimento em Radio vs Vendas")
+
+ggplot(ads, aes(x = Jornal, y = Vendas)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  theme_minimal() +
+  labs(title = "Relação: Investimento em Jornal vs Vendas")
+```
+
+### Boxplots
+
+```{r}
+ads %>% 
+  select(TV, Radio, Jornal, Vendas) %>% 
+  pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor") %>% 
+  ggplot(aes(x = Variavel, y = Valor)) +
+  geom_boxplot(fill = "lightblue") +
+  theme_minimal() +
+  labs(title = "Boxplots das Variáveis (Busca por Outliers)")
+```
+
+### Função de Verossimilhança
+
+$$L(\boldsymbol{\beta}, \sigma^2 | \mathbf{y}, \mathbf{X}) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left( -\frac{1}{2\sigma^2} \left(y_i - (\beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \beta_3 x_{3i})\right)^2 \right)$$
