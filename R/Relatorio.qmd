@@ -10,9 +10,7 @@ editor: visual
 
 #### a) Encontre um banco de dados em que a variável resposta $Y$ se relacione linearmente com $p$ covariáveis $X_1, \dots, X_p$, isto é,
 
-$$
-Y_i = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + e_i\
-$$
+$$Y_i = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + e_i\$$
 
 ## Banco de Dados Escolhido
 
@@ -24,16 +22,18 @@ O conjunto de dados é amplamente utilizado em estudos de regressão linear por 
 
 A escolha desse banco foi motivada pelos seguintes fatores:
 
--   A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
--   As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
--   Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
--   O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
--   É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
+- A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
+- As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
+- Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
+- O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
+- É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
 
 #### Carregamento do Banco de Dados
 
 ```{r}
-ads <- read.csv("C:/Users/User/Documents/GitHub/Projeto-Bayesiana/data/Advertising_Budget_and_Sales.csv")
+library(tidyverse)
+library(nimble)
+ads <- read.csv(file.choose())
 y_values <- ads$Sales....
 nomes <- c("X","TV","Radio","Jornal","Vendas")
 
@@ -54,6 +54,8 @@ names(ads) <- nomes
 correlacoes <- cor(ads[, c("Vendas", "TV", "Radio", "Jornal")])
 print(correlacoes)
 ```
+
+A partir da Correlação de Pearson, conseguimos perceber que TV se correlaciona fortemente com Vendas, Radio se correlaciona de maneira moderada e Jornal tem uma correlação fraca (mas ainda presente)
 
 ### Gráficos de Dispersão
 
@@ -78,6 +80,8 @@ ggplot(ads, aes(x = Jornal, y = Vendas)) +
   labs(title = "Relação: Investimento em Jornal vs Vendas")
 ```
 
+Validando o resultado apresentado anteriormente na correlação, podemos ver que para Investimento em TV e Radio, a dispersão segue uma tendência linear a medida que as vendas aumentam (ficando também mais dispersos com o aumento da venda), já para o Investimento em Jornal, os dados não parecem seguir uma linha de maneira consistente.
+
 ### Boxplots
 
 ```{r}
@@ -90,11 +94,11 @@ ads %>%
   labs(title = "Boxplots das Variáveis (Busca por Outliers)")
 ```
 
+A variável Jornal apresenta dois outliers com valores de investimento excepcionalmente altos em comparação ao restante da amostra. o investimento mediano em TV é consideravelmente maior do que nas outras variáveis, além de ter também o maior intervalo interquartílico, indicando alta variabilidade.
+
 #### c) Apresente a função de verossimilhança do modelo, assumindo que os erros $e_i$ são independentes e identicamente distribuídos segundo uma distribuição Normal com média zero e variância $\sigma^2$, isto é,
 
-$$
-e_i \sim N(0,\sigma^2), \quad i=1,\dots,n
-$$
+$$e_i \sim N(0,\sigma^2), \quad i=1,\dots,n$$
 
 ### Função de Verossimilhança:
 
@@ -104,15 +108,11 @@ $$L(\boldsymbol{\beta}, \sigma^2 | \mathbf{y}, \mathbf{X}) = \prod_{i=1}^{n} \fr
 
 #### d) Considere uma distribuição a priori conjugada natural para os parâmetros do modelo, assumindo que
 
-$$
-\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2)
-$$
+$$\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2)$$
 
 #### e que
 
-$$
-\sigma^2 \sim Gama\text{-}Inversa(a,d)
-$$
+$$\sigma^2 \sim Gama\text{-}Inversa(a,d)$$
 
 #### Escolha os hiperparâmetros $a$, $d$, $m$ e $V$ de modo que representem apropriadamente o conhecimento a priori sobre os parâmetros do modelo.
 
@@ -140,27 +140,23 @@ modelo_codigo <- nimbleCode({
 
 Para o modelo de regressão linear Bayesiano, foi adotada a priori conjugada natural, assumindo:
 
-$$
-\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2), \quad i=0,1,\dots,p\
-$$
+$$\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2), \quad i=0,1,\dots,p\$$
 
-$$
-\sigma^2 \sim Gama\text{-}Inversa(a,d)\
-$$
+$$\sigma^2 \sim Gama\text{-}Inversa(a,d)\$$
 
 A escolha dos hiperparâmetros foi feita de forma **pouco informativa**, permitindo que os dados observados tenham maior influência sobre a distribuição a posteriori do que crenças prévias muito restritivas.
 
 ### Justificativas das escolhas
 
--   **(m = 0)**:
+- **(m = 0)**:
 
 Foi adotada média a priori igual a zero para todos os coeficientes, indicando ausência de conhecimento prévio específico sobre direção ou magnitude dos efeitos das covariáveis sobre as vendas.
 
--   **(V = 100\^2 = 10000)**:
+- **(V = 100\^2 = 10000)**:
 
 Um valor elevado para a variância a priori torna a distribuição dos coeficientes bastante dispersa, caracterizando uma priori vaga (não informativa).
 
--   **(a = 0,001) e (d = 0,001)**:
+- **(a = 0,001) e (d = 0,001)**:
 
 Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori difusa para a variância dos erros, apropriada quando não se possui informação prévia sólida sobre a variabilidade do modelo.
 
@@ -288,25 +284,25 @@ resultado_posterior
 
 ### Análise e interpretação dos resultados
 
--   **Intercepto (**$\beta_0$):
+- **Intercepto (**$\beta_0$):
 
-    O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
+  O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
 
--   **TV (**$\beta_1$):
+- **TV (**$\beta_1$):
 
-    O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
+  O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
 
--   **Rádio (**$\beta_2$):
+- **Rádio (**$\beta_2$):
 
-    Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
+  Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
 
--   **Jornal (**$\beta_3$):
+- **Jornal (**$\beta_3$):
 
-    O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
+  O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
 
--   **Variância dos erros (**$\sigma^2$):
+- **Variância dos erros (**$\sigma^2$):
 
-    A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
+  A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
 
 ### Conclusão
 
