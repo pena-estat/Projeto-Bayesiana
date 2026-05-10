@@ -1,8 +1,7 @@
 library(tidyverse)
 library(nimble)
 
-
-ads <- read.csv("/data/Advertising_Budget_and_Sales.csv")
+ads <- read.csv("C:/Users/User/Documents/GitHub/Projeto-Bayesiana/data/Advertising_Budget_and_Sales.csv")
 y_values <- ads$Sales....
 nomes <- c("X","TV","Radio","Jornal","Vendas")
 view(ads)
@@ -68,7 +67,7 @@ MCMCconf$getMonitors()
 
 # Daqui para baixo o código continua igual:
 modelo_MCMC <- buildMCMC(MCMCconf)
-
+printErrors()
 Cmodelo <- compileNimble(modelo)
 Cmodelo_MCMC <- compileNimble(modelo_MCMC, project = modelo)
 
