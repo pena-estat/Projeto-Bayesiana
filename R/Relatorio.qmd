@@ -1,16 +1,52 @@
 ---
-title: "Relatório"
-format: html
+title: "Trabalho 1 - Inferência Estatística com Abordagem Bayesiana"
+format: pdf
+author: "Cecília Figueiredo Alves, Isabela Canuto Paiva, João Marcos Oliveira Neves, Júlia Luíza Costa de Toledo e Rodrigo Anastácio Silva e Pena"
+date: 14/05/2026
 editor: visual
 ---
 
-### Carregamento do Datasest
+# Parte 1:
+
+#### a) Encontre um banco de dados em que a variável resposta $Y$ se relacione linearmente com $p$ covariáveis $X_1, \dots, X_p$, isto é,
+
+$$
+Y_i = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + e_i\
+$$
+
+## Banco de Dados Escolhido
+
+Para este trabalho, foi selecionado o **Advertising Sales Dataset**, disponível na plataforma Kaggle. Esse banco de dados reúne informações sobre investimentos em publicidade em três diferentes canais de mídia — televisão (`TV`), rádio (`Radio`) e jornal (`Newspaper`) — e a variável resposta `Sales`, que representa o volume de vendas associado a esses investimentos.
+
+O conjunto de dados é amplamente utilizado em estudos de regressão linear por apresentar uma estrutura simples, objetiva e adequada para investigar como diferentes estratégias de marketing influenciam o desempenho de vendas de uma empresa.
+
+### Motivos para a escolha do banco de dados
+
+A escolha desse banco foi motivada pelos seguintes fatores:
+
+-   A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
+-   As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
+-   Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
+-   O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
+-   É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
+
+#### Carregamento do Banco de Dados
 
 ```{r}
-ads <- read.csv("data/Advertising_Budget_and_Sales.csv")
+ads <- read.csv("C:/Users/User/Documents/GitHub/Projeto-Bayesiana/data/Advertising_Budget_and_Sales.csv")
+y_values <- ads$Sales....
 nomes <- c("X","TV","Radio","Jornal","Vendas")
+
+X <- matrix(nrow = 200, ncol = 4)
+X[,1] <- 1
+X[,2] <- ads$TV.Ad.Budget....
+X[,3] <- ads$Radio.Ad.Budget....
+X[,4] <- ads$Newspaper.Ad.Budget....
+  
 names(ads) <- nomes
 ```
+
+#### b) Apresente uma análise descritiva do banco de dados por meio de gráficos, medidas resumo, análise de correlação e identificação de possíveis outliers, com o objetivo de avaliar a associação entre a variável resposta $Y$ e cada uma das covariáveis explicativas.
 
 ### Correlação
 
@@ -22,6 +58,7 @@ print(correlacoes)
 ### Gráficos de Dispersão
 
 ```{r}
+library(ggplot2)
 ggplot(ads, aes(x = TV, y = Vendas)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
@@ -53,6 +90,249 @@ ads %>%
   labs(title = "Boxplots das Variáveis (Busca por Outliers)")
 ```
 
-### Função de Verossimilhança
+#### c) Apresente a função de verossimilhança do modelo, assumindo que os erros $e_i$ são independentes e identicamente distribuídos segundo uma distribuição Normal com média zero e variância $\sigma^2$, isto é,
+
+$$
+e_i \sim N(0,\sigma^2), \quad i=1,\dots,n
+$$
+
+### Função de Verossimilhança:
 
 $$L(\boldsymbol{\beta}, \sigma^2 | \mathbf{y}, \mathbf{X}) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left( -\frac{1}{2\sigma^2} \left(y_i - (\beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \beta_3 x_{3i})\right)^2 \right)$$
+
+# Parte 2:
+
+#### d) Considere uma distribuição a priori conjugada natural para os parâmetros do modelo, assumindo que
+
+$$
+\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2)
+$$
+
+#### e que
+
+$$
+\sigma^2 \sim Gama\text{-}Inversa(a,d)
+$$
+
+#### Escolha os hiperparâmetros $a$, $d$, $m$ e $V$ de modo que representem apropriadamente o conhecimento a priori sobre os parâmetros do modelo.
+
+```{r}
+modelo_codigo <- nimbleCode({
+  
+  # --- Prioris ---
+  for(j in 1:P_plus_1) {
+    beta[j] ~ dnorm(mean = M[j], sd = sqrt(V[j] * sigma2))
+  }
+  sigma2 ~ dinvgamma(shape = a, scale = d)
+  
+  # --- Verossimilhança ---
+  for (i in 1:N) {
+
+    # inprod = Beta_i * X[,i]
+    mu[i] <- inprod(beta[1:P_plus_1], X[i, 1:P_plus_1])
+    y[i] ~ dnorm(mu[i], sd = sqrt(sigma2))
+  }
+  
+})
+```
+
+## Escolha das distribuições a priori e dos hiperparâmetros
+
+Para o modelo de regressão linear Bayesiano, foi adotada a priori conjugada natural, assumindo:
+
+$$
+\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2), \quad i=0,1,\dots,p\
+$$
+
+$$
+\sigma^2 \sim Gama\text{-}Inversa(a,d)\
+$$
+
+A escolha dos hiperparâmetros foi feita de forma **pouco informativa**, permitindo que os dados observados tenham maior influência sobre a distribuição a posteriori do que crenças prévias muito restritivas.
+
+### Justificativas das escolhas
+
+-   **(m = 0)**:
+
+Foi adotada média a priori igual a zero para todos os coeficientes, indicando ausência de conhecimento prévio específico sobre direção ou magnitude dos efeitos das covariáveis sobre as vendas.
+
+-   **(V = 100\^2 = 10000)**:
+
+Um valor elevado para a variância a priori torna a distribuição dos coeficientes bastante dispersa, caracterizando uma priori vaga (não informativa).
+
+-   **(a = 0,001) e (d = 0,001)**:
+
+Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori difusa para a variância dos erros, apropriada quando não se possui informação prévia sólida sobre a variabilidade do modelo.
+
+### Tabela resumo das prioris adotadas
+
+| Parâmetro | Distribuição a priori | Hiperparâmetros escolhidos | Média a priori | Variância a priori |
+|---------------|---------------|---------------|---------------|---------------|
+| $\beta_0$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
+| $\beta_1$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
+| $\beta_2$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
+| $\beta_3$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
+| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=0{,}001,\; d=0{,}001$ | $\text{Não Informativa}$ <br> $\text{Priori Difusa}$ | $\text{Muito elevada}$ <br> $\text{Pouco informativa}$ |
+
+#### e) Ajuste o modelo Bayesiano utilizando o pacote `Nimble`, considerando a distribuição a priori conjugada natural especificada no item (d), e obtenha a distribuição a posteriori dos parâmetros.
+
+#### Determine, para cada parâmetro do modelo:
+
+#### - a média a posteriori;
+
+#### - a moda a posteriori;
+
+#### - a variância a posteriori;
+
+#### Além disso, obtenha um intervalo a posteriori com base nos percentis de ordem $2{,}5\%$ (limite inferior) e $97{,}5\%$ (limite superior).
+
+#### Por fim, analise e interprete os resultados obtidos.
+
+```{r}
+modelo_constantes <- list(
+  M = rep(0,4),
+  P_plus_1 = 4,
+  V = rep(100^2,4),
+  a = 1/1000,
+  d = 1/1000,
+  N = length(y_values),
+  X = X
+)
+```
+
+```{r}
+modelo_inits <- list(
+  inits1 = list(beta = runif(4,-10,10), sigma2 = 1),
+  inits2 = list(beta = runif(4,-50,50), sigma2 = 99)
+)
+
+modelo_dados <- list(
+  y = y_values
+)
+
+modelo <- nimbleModel(modelo_codigo, modelo_constantes, modelo_dados, modelo_inits)
+
+modelo$getNodeNames()
+
+MCMCconf <- configureMCMC(modelo)
+
+MCMCconf$addMonitors("beta") 
+
+# Se quiser conferir o que ele vai salvar, rode:
+MCMCconf$getMonitors() 
+# A saída deve mostrar "beta" e "sigma2"
+
+# Daqui para baixo o código continua igual:
+modelo_MCMC <- buildMCMC(MCMCconf)
+Cmodelo <- compileNimble(modelo)
+Cmodelo_MCMC <- compileNimble(modelo_MCMC, project = modelo)
+
+modelo_res <- runMCMC(Cmodelo_MCMC, niter = 10000,
+                      inits = modelo_inits,
+                      samplesAsCodaMCMC = TRUE,
+                      setSeed = c(2312312*1,123332*2),
+                      nchains=2,
+                      nburnin=1000)
+```
+
+```{r}
+summary(modelo_res)
+```
+
+```{r}
+posterior_mode <- function(x){
+  d <- density(x)
+  d$x[which.max(d$y)]
+}
+
+amostras <- as.matrix(modelo_res)
+
+modas <- apply(amostras, 2, posterior_mode)
+modas
+```
+
+```{r}
+variancias <- apply(amostras, 2, var)
+variancias
+```
+
+```{r}
+intervalos <- apply(amostras, 2, quantile, probs = c(0.025, 0.975))
+intervalos
+```
+
+```{r}
+medias <- colMeans(amostras)
+
+resultado_posterior <- data.frame(
+  Parametro = colnames(amostras),
+  Media = medias,
+  Moda = modas,
+  Variancia = variancias,
+  LI_2.5 = intervalos[1,],
+  LS_97.5 = intervalos[2,]
+)
+
+resultado_posterior
+```
+
+### Resumo da distribuição a posteriori dos parâmetros
+
+| Parâmetro | Média a posteriori | Moda a posteriori | Variância a posteriori | LI (2,5%) | LS (97,5%) |
+|------------|------------|------------|------------|------------|------------|
+| $\beta_0$ | 2.945575879 | 2.9535536568 | 9.613677e-02 | 2.33966872 | 3.56194445 |
+| $\beta_1$ | 0.045749929 | 0.0455893516 | 1.887501e-06 | 0.04303955 | 0.04839467 |
+| $\beta_2$ | 0.188364488 | 0.1904802205 | 7.551470e-05 | 0.17114260 | 0.20519452 |
+| $\beta_3$ | -0.001029252 | -0.0005671229 | 3.422312e-05 | -0.01267426 | 0.01028797 |
+| $\sigma^2$ | 2.816054885 | 2.7616979073 | 8.187717e-02 | 2.31666109 | 3.43587748 |
+
+### Análise e interpretação dos resultados
+
+-   **Intercepto (**$\beta_0$):
+
+    O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
+
+-   **TV (**$\beta_1$):
+
+    O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
+
+-   **Rádio (**$\beta_2$):
+
+    Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
+
+-   **Jornal (**$\beta_3$):
+
+    O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
+
+-   **Variância dos erros (**$\sigma^2$):
+
+    A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
+
+### Conclusão
+
+Os resultados Bayesianos indicam que os investimentos em **TV** e **Rádio** são relevantes para explicar a variável resposta `Sales`, enquanto o investimento em **Jornal** não apresenta evidência clara de contribuição significativa. As distribuições a posteriori mostram estabilidade entre média e moda, sugerindo boa convergência e consistência das estimativas obtidas via MCMC.
+
+## Apêndice A — Diagnóstico de convergência das cadeias MCMC
+
+```{r}
+plot(modelo_res)
+
+df_cadeia1 <- as.data.frame(modelo_res[[1]])
+df_cadeia2 <- as.data.frame(modelo_res[[2]])
+
+ggplot() +
+  geom_line(data = df_cadeia1, aes(y = `beta[1]`, x = 1:9000)) +
+  geom_line(data = df_cadeia2, aes(y = `beta[1]`, x = 1:9000), color = 'red') +
+  labs(x = 'Iteração', y = expression(beta[1])) +
+  scale_x_continuous(breaks = seq(0, 10000, by = 1000)) +
+  theme_bw()
+
+modelo_res[[1]] %>% 
+  ggplot()+
+  geom_line(aes(y = sigma2, x = 1:9000))+
+  geom_line(aes(y = sigma2, x = 1:9000),
+            data = modelo_res[[2]], color = 'red')+
+  labs(x = 'iteração')+
+  scale_x_continuous(breaks = seq(0,10000,by=1000))+
+  theme_bw()
+```
