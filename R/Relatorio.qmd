@@ -23,11 +23,11 @@ O conjunto de dados é amplamente utilizado em estudos de regressão linear por 
 
 A escolha desse banco foi motivada pelos seguintes fatores:
 
--   A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
--   As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
--   Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
--   O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
--   É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
+- A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
+- As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
+- Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
+- O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
+- É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
 
 ```{r, include = FALSE, warning = FALSE}
 # Carregamento do Banco de Dados
@@ -149,15 +149,15 @@ A escolha dos hiperparâmetros foi feita de forma **pouco informativa**, permiti
 
 ### Justificativas das escolhas
 
--   **(m = 0)**:
+- **(m = 0)**:
 
 Foi adotada média a priori igual a zero para todos os coeficientes, indicando ausência de conhecimento prévio específico sobre direção ou magnitude dos efeitos das covariáveis sobre as vendas.
 
--   **(V = 100\^2 = 10000)**:
+- **(V = 100\^2 = 10000)**:
 
 Um valor elevado para a variância a priori torna a distribuição dos coeficientes bastante dispersa, caracterizando uma priori vaga (não informativa).
 
--   **(a = 0,001) e (d = 0,001)**:
+- **(a = 0,001) e (d = 0,001)**:
 
 Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori difusa para a variância dos erros, apropriada quando não se possui informação prévia sólida sobre a variabilidade do modelo.
 
@@ -286,25 +286,25 @@ resultado_posterior
 
 ### Análise e interpretação dos resultados
 
--   **Intercepto (**$\beta_0$**):**
+- **Intercepto (**$\beta_0$**):**
 
-    O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
+  O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
 
--   **TV (**$\beta_1$**):**
+- **TV (**$\beta_1$**):**
 
-    O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
+  O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
 
--   **Rádio (**$\beta_2$**):**
+- **Rádio (**$\beta_2$**):**
 
-    Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
+  Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
 
--   **Jornal (**$\beta_3$**):**
+- **Jornal (**$\beta_3$**):**
 
-    O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
+  O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
 
--   **Variância dos erros (**$\sigma^2$**):**
+- **Variância dos erros (**$\sigma^2$**):**
 
-    A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
+  A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
 
 ### Conclusão
 
@@ -339,7 +339,7 @@ $$\beta_2 \mid \sigma^2 \sim Normal(0.188530,5\sigma^2)$$
 
 $$\beta_3 \mid \sigma^2 \sim Normal(-0.001037, 5\sigma^2)$$
 
--   Uma variância menor for atribuída a essas distribuições, pois como a construção foi feita com base em mínimos quadrados, atribui-se mais certeza sobre a estimativa.
+- Uma variância menor for atribuída a essas distribuições, pois como a construção foi feita com base em mínimos quadrados, atribui-se mais certeza sobre a estimativa.
 
 ```{r, include = FALSE}
 sum_model <- summary(mod)
@@ -353,7 +353,7 @@ var <- bet^2/(1.5^2 * 0.5)
 
 $$\sigma^2 \sim Gama\text{-}Inversa(2.5,4.261418)$$
 
--   Para $\sigma^2$, os parâmetros a e d foram escolhidos de modo que $E(\sigma^2)=2.840945$, que é a variância dos resíduos encontrada por mínimos quadrados.
+- Para $\sigma^2$, os parâmetros a e d foram escolhidos de modo que $E(\sigma^2)=2.840945$, que é a variância dos resíduos encontrada por mínimos quadrados.
 
 **Tabela resumo das prioris adotadas**
 
@@ -455,6 +455,12 @@ resultado_posterior2 <- data.frame(
 
 resultado_posterior2
 ```
+
+Os resultados obtidos mostram que a incorporação das estimativas de mínimos quadrados como médias a priori produz distribuições posteriores muito semelhantes às obtidas no item (e). Mesmo utilizando uma priori mais informativa, as médias posteriores, intervalos de credibilidade e interpretações dos coeficientes permanecem praticamente inalterados.
+
+Observa-se que os efeitos associados às variáveis TV e Rádio continuam positivos, enquanto a variável Jornal permanece apresentando contribuição reduzida, uma vez que seu intervalo de credibilidade continua incluindo o valor zero. Além disso, a estimativa posterior de $\sigma^2$ mantém-se próxima à variabilidade residual estimada anteriormente.
+
+Esse comportamento sugere que a informação a priori construída a partir dos estimadores clássicos é compatível com a estrutura observada nos dados. Como consequência, não ocorre conflito entre priori e verossimilhança, fazendo com que a posteriori preserve essencialmente as mesmas conclusões inferenciais.
 
 ## Apêndice A — Diagnóstico de convergência das cadeias MCMC
 
