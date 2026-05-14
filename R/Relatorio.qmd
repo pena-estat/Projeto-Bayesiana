@@ -1,16 +1,17 @@
 ---
 title: "Trabalho 1 - Inferência Estatística com Abordagem Bayesiana"
-format: pdf
+format: html
 author: "Cecília Figueiredo Alves, Isabela Canuto Paiva, João Marcos Oliveira Neves, Júlia Luíza Costa de Toledo e Rodrigo Anastácio Silva e Pena"
 date: 14/05/2026
 editor: visual
+echo: false
 ---
 
 # Parte 1:
 
 #### a) Encontre um banco de dados em que a variável resposta $Y$ se relacione linearmente com $p$ covariáveis $X_1, \dots, X_p$, isto é,
 
-$$Y_i = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + e_i\$$
+$$Y_i = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + e_i$$
 
 ## Banco de Dados Escolhido
 
@@ -22,15 +23,15 @@ O conjunto de dados é amplamente utilizado em estudos de regressão linear por 
 
 A escolha desse banco foi motivada pelos seguintes fatores:
 
-- A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
-- As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
-- Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
-- O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
-- É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
+-   A variável resposta `Sales` é quantitativa contínua, sendo apropriada para modelagem por regressão linear;
+-   As covariáveis `TV`, `Radio` e `Newspaper` são numéricas e representam fatores explicativos relevantes;
+-   Existe plausibilidade prática e teórica de relação linear entre gastos com publicidade e vendas;
+-   O conjunto possui organização clara, fácil interpretação e ampla utilização acadêmica;
+-   É adequado para aplicação de métodos Bayesianos de regressão linear múltipla, permitindo interpretação estatística consistente.
 
-#### Carregamento do Banco de Dados
+```{r, include = FALSE, warning = FALSE}
+# Carregamento do Banco de Dados
 
-```{r}
 library(tidyverse)
 library(nimble)
 ads <- read.csv(file.choose())
@@ -140,23 +141,23 @@ modelo_codigo <- nimbleCode({
 
 Para o modelo de regressão linear Bayesiano, foi adotada a priori conjugada natural, assumindo:
 
-$$\beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2), \quad i=0,1,\dots,p\$$
+$$beta_i \mid \sigma^2 \sim Normal(m, V\sigma^2), \quad i=0,1,\dots,p$$
 
-$$\sigma^2 \sim Gama\text{-}Inversa(a,d)\$$
+$$sigma^2 \sim Gama\text{-}Inversa(a,d)$$
 
 A escolha dos hiperparâmetros foi feita de forma **pouco informativa**, permitindo que os dados observados tenham maior influência sobre a distribuição a posteriori do que crenças prévias muito restritivas.
 
 ### Justificativas das escolhas
 
-- **(m = 0)**:
+-   **(m = 0)**:
 
 Foi adotada média a priori igual a zero para todos os coeficientes, indicando ausência de conhecimento prévio específico sobre direção ou magnitude dos efeitos das covariáveis sobre as vendas.
 
-- **(V = 100\^2 = 10000)**:
+-   **(V = 100\^2 = 10000)**:
 
 Um valor elevado para a variância a priori torna a distribuição dos coeficientes bastante dispersa, caracterizando uma priori vaga (não informativa).
 
-- **(a = 0,001) e (d = 0,001)**:
+-   **(a = 0,001) e (d = 0,001)**:
 
 Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori difusa para a variância dos erros, apropriada quando não se possui informação prévia sólida sobre a variabilidade do modelo.
 
@@ -168,7 +169,7 @@ Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori di
 | $\beta_1$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
 | $\beta_2$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
 | $\beta_3$ | $Normal(m, V\sigma^2)$ | $m=0,\; V=10000$ | $0$ | $10000\sigma^2$ |
-| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=0{,}001,\; d=0{,}001$ | $\text{Não Informativa}$ <br> $\text{Priori Difusa}$ | $\text{Muito elevada}$ <br> $\text{Pouco informativa}$ |
+| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=0{,}001,\; d=0{,}001$ | $\text{Não Existe}$ | $\text{Não Existe}$ |
 
 #### e) Ajuste o modelo Bayesiano utilizando o pacote `Nimble`, considerando a distribuição a priori conjugada natural especificada no item (d), e obtenha a distribuição a posteriori dos parâmetros.
 
@@ -184,7 +185,7 @@ Esses valores pequenos para a distribuição Gama-Inversa produzem uma priori di
 
 #### Por fim, analise e interprete os resultados obtidos.
 
-```{r}
+```{r,include = FALSE}
 modelo_constantes <- list(
   M = rep(0,4),
   P_plus_1 = 4,
@@ -196,7 +197,7 @@ modelo_constantes <- list(
 )
 ```
 
-```{r}
+```{r,include = FALSE}
 set.seed(28126)
 modelo_inits <- list(
   inits1 = list(beta = runif(4,-10,10), sigma2 = 1),
@@ -236,7 +237,7 @@ modelo_res <- runMCMC(Cmodelo_MCMC, niter = 10000,
 summary(modelo_res)
 ```
 
-```{r}
+```{r, include = FALSE}
 posterior_mode <- function(x){
   d <- density(x)
   d$x[which.max(d$y)]
@@ -285,25 +286,25 @@ resultado_posterior
 
 ### Análise e interpretação dos resultados
 
-- **Intercepto (**$\beta_0$):
+-   **Intercepto (**$\beta_0$**):**
 
-  O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
+    O valor médio a posteriori de aproximadamente 2,95 representa a estimativa base de vendas quando os investimentos em publicidade são iguais a zero.
 
-- **TV (**$\beta_1$):
+-   **TV (**$\beta_1$**):**
 
-  O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
+    O coeficiente associado ao investimento em TV é positivo, com média a posteriori de aproximadamente 0,0457 e intervalo de credibilidade totalmente positivo. Isso sugere forte evidência de que maiores investimentos em TV aumentam as vendas esperadas.
 
-- **Rádio (**$\beta_2$):
+-   **Rádio (**$\beta_2$**):**
 
-  Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
+    Também apresenta efeito positivo relevante, com média a posteriori de aproximadamente 0,1884 e intervalo totalmente acima de zero, indicando associação positiva entre investimento em rádio e vendas.
 
-- **Jornal (**$\beta_3$):
+-   **Jornal (**$\beta_3$**):**
 
-  O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
+    O intervalo de credibilidade inclui o zero, sugerindo ausência de evidência estatística suficiente para afirmar que o investimento em jornal possui efeito significativo sobre as vendas.
 
-- **Variância dos erros (**$\sigma^2$):
+-   **Variância dos erros (**$\sigma^2$**):**
 
-  A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
+    A estimativa posterior sugere variabilidade moderada dos resíduos, com média em torno de 2,82.
 
 ### Conclusão
 
@@ -328,9 +329,136 @@ Apesar da proximidade numérica entre os resultados, as abordagens diferem na fo
 
 #### h) Construa uma distribuição a priori conjugada natural para cada parâmetro assumindo que suas médias a priori sejam as estimativas de mínimos quadrados obtidas. Ajuste o modelo com esta nova informação a priori e compare os resultados a posteriori com os resultados obtidos no item (e). Conclua.
 
-## Apêndice A — Diagnóstico de convergência das cadeias MCMC
+**Construindo as distribuições a piori conjugadas naturais com base nas estimativas de mínimos quadrados**
+
+$$\beta_0 \mid \sigma^2 \sim Normal(2.9389889, 5\sigma^2)$$
+
+$$\beta_1 \mid \sigma^2 \sim Normal(0.045765, 5\sigma^2)$$
+
+$$\beta_2 \mid \sigma^2 \sim Normal(0.188530,5\sigma^2)$$
+
+$$\beta_3 \mid \sigma^2 \sim Normal(-0.001037, 5\sigma^2)$$
+
+-   Uma variância menor for atribuída a essas distribuições, pois como a construção foi feita com base em mínimos quadrados, atribui-se mais certeza sobre a estimativa.
+
+```{r, include = FALSE}
+sum_model <- summary(mod)
+# Variância residual (sigma^2)
+variancia_residuos <- sum_model$sigma^2
+
+alpha <- 2.5 # alpha fixado
+bet <- variancia_residuos*1.5 # encontrando beta tq E(X) = var. residual
+var <- bet^2/(1.5^2 * 0.5)
+```
+
+$$\sigma^2 \sim Gama\text{-}Inversa(2.5,4.261418)$$
+
+-   Para $\sigma^2$, os parâmetros a e d foram escolhidos de modo que $E(\sigma^2)=2.840945$, que é a variância dos resíduos encontrada por mínimos quadrados.
+
+**Tabela resumo das prioris adotadas**
+
+| Parâmetro | Distribuição a priori | Hiperparâmetros escolhidos | Média a priori | Variância a priori |
+|---------------|---------------|---------------|---------------|---------------|
+| $\beta_0$ | $Normal(m, V\sigma^2)$ | $m=2.938889,\; V=5$ | $2.938889$ | $5\sigma^2$ |
+| $\beta_1$ | $Normal(m, V\sigma^2)$ | $m=0.045765,\; V=5$ | $0.045765$ | $5\sigma^2$ |
+| $\beta_2$ | $Normal(m, V\sigma^2)$ | $m=0.18853,\; V=5$ | $0.18853$ | $5\sigma^2$ |
+| $\beta_3$ | $Normal(m, V\sigma^2)$ | $m=-0.001037,\; V=5$ | $-0.001037$ | $5\sigma^2$ |
+| $\sigma^2$ | $Gama\text{-}Inversa(a,d)$ | $a=2.5,\; d=4.261418$ | $2.840945$ | $16.14194$ |
+
+**Ajustando o modelo com a nova informação a priori** \#### Por fim, analise e interprete os resultados obtidos.
+
+```{r,include = FALSE}
+modelo_constantes2 <- list(
+  M = c(2.938889,0.045765,0.18853,-0.001037),
+  P_plus_1 = 4,
+  V = rep(5,4),
+  a = 2.5,
+  d = 4.261418,
+  N = length(y_values),
+  X = X
+)
+```
+
+```{r,include = FALSE}
+set.seed(28126)
+modelo_inits2 <- list(
+  inits1 = list(beta = runif(4,-10,10), sigma2 = 1),
+  inits2 = list(beta = runif(4,-50,50), sigma2 = 99)
+)
+
+modelo_dados2 <- list(
+  y = y_values
+)
+
+modelo2 <- nimbleModel(modelo_codigo, modelo_constantes2, modelo_dados2, modelo_inits2)
+
+modelo2$getNodeNames()
+
+MCMCconf2 <- configureMCMC(modelo2)
+
+MCMCconf2$addMonitors("beta") 
+
+# Se quiser conferir o que ele vai salvar, rode:
+MCMCconf2$getMonitors() 
+# A saída deve mostrar "beta" e "sigma2"
+
+# Daqui para baixo o código continua igual:
+modelo_MCMC2 <- buildMCMC(MCMCconf2)
+Cmodelo2 <- compileNimble(modelo2)
+Cmodelo_MCMC2 <- compileNimble(modelo_MCMC2, project = modelo2)
+
+modelo_res2 <- runMCMC(Cmodelo_MCMC2, niter = 10000,
+                      inits = modelo_inits2,
+                      samplesAsCodaMCMC = TRUE,
+                      setSeed = c(2312312*1,123332*2),
+                      nchains=2,
+                      nburnin=0)
+```
 
 ```{r}
+summary(modelo_res2)
+```
+
+```{r, include = FALSE}
+posterior_mode2 <- function(x){
+  d <- density(x)
+  d$x[which.max(d$y)]
+}
+
+amostras2 <- as.matrix(modelo_res2)
+
+modas2 <- apply(amostras2, 2, posterior_mode2)
+modas2
+```
+
+```{r}
+variancias2 <- apply(amostras2, 2, var)
+variancias2
+```
+
+```{r}
+intervalos2 <- apply(amostras2, 2, quantile, probs = c(0.025, 0.975))
+intervalos2
+```
+
+```{r}
+medias2 <- colMeans(amostras2)
+
+resultado_posterior2 <- data.frame(
+  Parametro = colnames(amostras2),
+  Media = medias2,
+  Moda = modas2,
+  Variancia = variancias2,
+  LI_2.5 = intervalos2[1,],
+  LS_97.5 = intervalos2[2,]
+)
+
+resultado_posterior2
+```
+
+## Apêndice A — Diagnóstico de convergência das cadeias MCMC
+
+```{r, warning = FALSE}
 plot(modelo_res)
 
 df_cadeia1 <- as.data.frame(modelo_res[[1]])
@@ -343,7 +471,7 @@ ggplot() +
   scale_x_continuous(breaks = seq(0, 10000, by = 1000)) +
   theme_bw()
 
-modelo_res[[1]] %>% 
+modelo_res[[1]] %>%
   ggplot()+
   geom_line(aes(y = sigma2, x = 1:9000))+
   geom_line(aes(y = sigma2, x = 1:9000),
