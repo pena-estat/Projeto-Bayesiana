@@ -1,0 +1,393 @@
+---
+title: "Trabalho 2 - Inferência Estatística com Abordagem Bayesiana"
+format: html
+author: "Cecília Figueiredo Alves, Isabela Canuto Paiva, João Marcos Oliveira Neves, Júlia Luíza Costa de Toledo e Rodrigo Anastácio Silva e Pena"
+date: today
+editor: visual
+echo: false
+---
+
+**PROBLEMA:** Considere uma amostra $X = (X_1,...,X_N)$ independente e identicamente distribuída da distribuição normal com média µ e variância $σ^2$, $µ ∈ R$ e $σ^2 ∈ R+$, ambas desconhecidas. Seu objetivo é estimar $µ$ e $σ^2$. Para isto utilizará uma distribuição *a priori* conjugada natural.
+
+# Parte 1:
+
+#### a) Geração da amostra: Escolha valores apropriados para $(µ,σ^2)$. Fixado estes parâmetros, gere uma amostra de tamanho n = 500 da distribuição amostral. Armazene estes valores para análises posteriores. Faça uma apresentação gráfica apropriada da amostra gerada. Determine a média, variância, curtose e assimetria da amostra gerada.
+
+**Fixando valores para** $µ$ **e** $σ^2$
+
+No decorrer do Trabalho, foram utilizados os seguintes valores para os parâmetros:
+
+-   $µ = 10$
+
+-   $σ^2 = 4$
+
+```{r}
+# Gerando uma Amostra
+
+set.seed(3628)
+
+# Fixando o tamanho da amostra e os parâmetros
+n <- 500
+mu <- 10
+sigma2 <- 4
+sigma <- sqrt(sigma2)
+
+# Gerando a amostra
+amostra <- rnorm(500,mu,sigma)
+
+```
+
+**Análise gráfica da amostra**
+
+```{r, warning = FALSE}
+library(ggplot2)
+library(tidyverse)
+
+tema<-theme(title=element_text(color="black",size=15),
+            plot.title = element_text(hjust = 0.5),
+            axis.title = element_text(color="black",size=10),
+            panel.grid=element_line(color="grey75",linetype = "dashed",size=.8),
+            axis.line=element_blank(),
+            plot.background=element_rect(fill="white",color="white"),
+            panel.background=element_rect(fill="white"),
+            panel.border = element_rect(colour = "black", fill = NA,size=0.59))
+
+df_amostra <- data.frame(amostra)
+
+df_amostra %>%
+ggplot(aes(x=amostra))+
+  geom_histogram(aes(y = after_stat(density)), 
+                 fill = "royalblue1", color = "black", alpha = 0.6, bins = 30) +
+  geom_density(color = "red", size = 1) +
+  labs(title="Histograma e Curva de Densidade da Amostra Gerada",
+       x="Valor",
+       y="Densidade")+
+  tema
+```
+
+**Medidas de dispersão e de forma**
+
+```{r, warning = FALSE}
+library(e1071)
+
+# Cálculo da media e variancia
+media <- mean(amostra)
+var <- var(amostra)
+desvio <- sqrt(var)
+
+# Cálculo da curtose
+curtose <- kurtosis(amostra)
+
+# Cálculo da assimetria
+assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
+```
+
+| Média   | Variância | Desvio Padrão | Curtose  | Assimetria |
+|---------|-----------|---------------|----------|------------|
+| $9.974$ | $3.595$   | $1.896$       | $-0.191$ | $0.032$    |
+
+#### b) Construção da sua distribuição a priori: Construa sua distribuição a priori conjugada natural para $(µ,σ^2)$ tal que a distribuição para $µ$ seja centrada no valor real para a média populacional (o valor usando na geração dos dados) e que seja pouco informativa (isto é tenha uma variância grande) e que a distribuição para $σ^2$ seja pouco informativa. Faça o gráfico das distribuições a priori para $µ$ e $σ^2$. Calcule a média e a variância a priori para $µ$ e $σ^2$.
+
+As distribuições a priori conjugadas naturais para $µ$ e $σ^2$ são:
+
+-   $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
+
+-   $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
+
+**Escolhendo valores para os parâmetros das distribuições de** $µ$ **e** $σ^2$
+
+-   $µ ∼ t - Student(10, 250, 8.128, 4.032)$
+
+-   $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
+
+Os parâmetros foram escolhidos de modo que ambas as distribuições estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
+
+**Cálculo da Média e Variância de** $µ$
+
+```{r}
+# Parâmetros
+m <- 10
+V <- 250
+a <- 8.128
+d <- 4.032
+
+# Cálculo da media e variância de mu
+media_mu <- m
+var_mu <- a*V/(d-2)
+
+```
+
+-   $E(µ) = m = 10$
+
+-   $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
+
+**Cálculo da Média e Variância de** $σ^2$
+
+```{r}
+# Cálculo da media e variância de sigma2
+media_sig <- a/(d-2)
+var_sig <- 2*(a^2)/((d-4)*(d-2)^2)
+```
+
+-   $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
+
+-   $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
+
+**Resumo**
+
+| Parâmetro | Distribuição a Priori            | Média a Priori | Variância a Priori |
+|---------------|---------------------------|---------------|---------------|
+| $µ$       | t-Student(10, 8.128, 250, 4.032) | $10$           | $1000$             |
+| $σ^2$     | Gama-Inversa(8.128, 4.032)       | $4$            | $1000$             |
+
+**Análise gráfica da distribuição de** $µ$
+
+```{r, warning = FALSE}
+
+t_student <- function(x,m,V,a,d){
+  t <- (1/pi)^0.5 * (gamma(0.5*d + 0.5)*a^(d/2)*gamma(d/2)^(-1)*V^(-1/2)) * (a + V^(-1)*(x-m)^2)^(-0.5*d - 0.5)
+  
+  return(t)
+}
+
+dados <- data.frame(
+  x = seq(-100, 100, by = 0.1)
+)
+
+dados$y <- t_student(dados$x,10,250,8.128,4.032)
+
+ggplot(dados, aes(x = x, y = y)) +
+  geom_line(color = "red", linewidth = 1.2) +  
+  labs(
+    title = "Densidade Distribuição a Priori de µ",
+    x = "Valor",
+    y = "Densidade"
+  ) +
+  tema
+```
+
+**Análise gráfica da distribuição de** $σ^2$
+
+```{r, warning = FALSE}
+library(invgamma)
+
+ggplot() +
+  xlim(0,10) +
+  geom_function(fun = dinvgamma, args = list(a/2,d/2), size = 1, color = "blue") +
+  labs(
+    title = "Densidade da Distribuição a Priori de σ2",
+    x = "Valor", 
+    y = "Densidade"
+  )
+```
+
+#### c) Considerando a distribuição a priori construída no ítem (b) e os dados gerados no ítem (a), determine a distribuição a posteriori exata para $µ$ e $σ^2$. Faça o gráfico das distribuições a posteriori para $µ$ e $σ^2$. Calcule a média, a moda e a variância a posteriori para $µ$ e $σ^2$. Considerando a média a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas. Considerando a moda a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas.
+
+As distribuições a posteriori exatas para $µ$ e $σ^2$ são:
+
+-   $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
+
+-   $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
+
+em que
+
+-   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)}$
+
+-   $d^* = d + n$
+
+-   $m^* = \frac{nV\bar{x} + m}{nV+ 1}$
+
+-   $V^* = \frac{V}{nV + 1}$
+
+**Cálculo da Média, Moda e Variância de** $µ|x$
+
+```{r}
+# Calculo da soma dos quadrados dos xi
+soma_quad <- sum(amostra^2)
+
+# Parâmetros
+m_estrela <- (n*V*media + m)/(n*V + 1)
+V_estrela <- V/(n*V + 1)
+a_estrela <- a + soma_quad+ m^2/V - (n*V*media + m)^2/(V*(n*V + 1))
+d_estrela <- d + n
+
+# Cálculo da media e variância de mu a post
+media_mu_post <- m_estrela
+var_mu_post <- a_estrela*V_estrela/(d_estrela-2)
+
+# Cálculo da moda
+t_student2 <- function(x, m, V, a, d) {
+  # Calculando tudo na escala logarítmica pois a e d sao muito grandes e aí vai para Infinito, gerando NAs
+  log_t <- -0.5 * log(pi) + 
+           lgamma(0.5 * d + 0.5) + 
+           (0.5 * d) * log(a) - 
+           lgamma(0.5 * d) - 
+           0.5 * log(V) - 
+           (0.5 * d + 0.5) * log(a + (1/V) * (x - m)^2)
+  
+  return(exp(log_t))
+}
+
+resultado <- optimize(
+  f = t_student2,              # Passamos apenas o NOME da função
+  interval = c(0, 10), 
+  maximum = TRUE, 
+  # A partir daqui, passamos os argumentos adicionais que a t_student2 precisa:
+  m = m_estrela, 
+  V = V_estrela, 
+  a = a_estrela, 
+  d = d_estrela
+)
+
+# 3. Extraindo o valor exato da moda
+moda_da_funcao <- resultado$maximum
+
+```
+
+-   $E(µ|x) = m^* = 9.974$
+
+-   $\text{Moda}(\mu|x) = 9.974$
+
+-   $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
+
+**Cálculo da Média, Moda e Variância de** $σ^2|x$
+
+```{r}
+# Cálculo da media e variância de sigma2 
+media_sig_post <- a_estrela/(d_estrela-2) 
+var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
+```
+
+-   $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
+
+-   $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.2798$
+
+-   $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
+
+**Resumo**
+
+| Parâmetro | Distribuição a Posteriori                  | Média a Posteriori | Variância a Posteriori |
+|---------------|----------------------------|---------------|---------------|
+| $µ$       | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$            | $0.007$                |
+| $σ^2$     | Gama-Inversa(1801.805, 504.032)            | $3.589$            | $0.051$                |
+
+**Análise gráfica da distribuição de** $µ|x$
+
+```{r, warning = FALSE}
+t_student2 <- function(x, m, V, a, d) {
+  # Calculando tudo na escala logarítmica pois a e d sao muito grandes e aí vai para Infinito, gerando NAs
+  log_t <- -0.5 * log(pi) + 
+           lgamma(0.5 * d + 0.5) + 
+           (0.5 * d) * log(a) - 
+           lgamma(0.5 * d) - 
+           0.5 * log(V) - 
+           (0.5 * d + 0.5) * log(a + (1/V) * (x - m)^2)
+  
+  return(exp(log_t))
+}
+
+dados2 <- data.frame(
+  x = seq(0, 20, by = 0.1)
+)
+
+dados2$y <- t_student2(dados2$x,m_estrela,V_estrela,a_estrela,d_estrela)
+
+ggplot(dados2, aes(x = x, y = y)) +
+  geom_line(color = "red", linewidth = 1.2) +  
+  labs(
+    title = "Densidade Distribuição a Posteriori de µ",
+    x = "Valor",
+    y = "Densidade"
+  )
+
+
+
+```
+
+**Análise gráfica da distribuição de** $σ^2|x$
+
+```{r, warning = FALSE}
+library(invgamma)
+
+ggplot() +
+  xlim(0,10) +
+  geom_function(fun = dinvgamma, args = list(a_estrela/2,d_estrela/2), size = 1, color = "blue") +
+  labs(
+    title = "Densidade da Distribuição a Posteriori de σ2",
+    x = "Valor", 
+    y = "Densidade"
+  ) +
+  tema
+```
+
+# Parte 2:
+
+Considerando a amostra gerada em **(a)** e a distribuição a priori conjugada natural para $(µ,σ^2)$ em **(b)**
+
+#### d) Encontre as expressões das funções densidades para $µ | σ^2,x$ e $σ^2 | µ,x$ (Isto é, das distribuições condicionais completas a posteriori.)
+
+#### e) Implemente o Amostrador de Gibbs e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias de dois valores inciais distintos, um bem próximo do valor real do parâmetro e outro bem longe. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
+
+#### f) Implemente o Metropolis-Hastings e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias nos mesmos valores inciais considerados no item anterior. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e Compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
+
+```{r}
+metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d) {
+  
+  log_postmu <- function(x, m, V, a, d) {
+    # Usando log pq tava dando problema
+    constante <- 0.5 * log(1/pi) + lgamma(0.5*d + 0.5) + (d/2)*log(a) - lgamma(d/2) - 0.5*log(V)
+    nucleo <- (-0.5*d - 0.5) * log(a + V^(-1) * (x-m)^2)
+    return(constante + nucleo)
+  }
+  
+  post <- list()
+  for(i in 1:n_cadeias){
+    post[[i]] <- matrix(nrow = n_total, ncol = 2)
+    colnames(post[[i]]) <- c("mu", "sigma")
+    post[[i]][1, ] <- init[i, ]
+  }
+  
+  for(i in 1:n_cadeias){
+    for(j in 2:n_total){
+      mu_atual <- post[[i]][j-1, 1]
+      proposta_mu <- rnorm(1, mean = mu_atual, sd = sqrt(5))
+      # Log pq tava dando problema com numero alto
+      # Era P(novo) / P(antigo)
+      log_razao_mu <- log_postmu(proposta_mu, m, V, a, d) - log_postmu(mu_atual, m, V, a, d)
+      
+      if (!is.na(log_razao_mu) && log(runif(1)) < log_razao_mu) {
+        post[[i]][j, 1] <- proposta_mu
+      } else {
+        post[[i]][j, 1] <- mu_atual
+      }
+      
+      sigma_atual <- post[[i]][j-1, 2]
+      # Proposta de sigma é uma lognormal
+      proposta_sigma <- rlnorm(1, meanlog = log(sigma_atual), sdlog = sqrt(5))
+      
+      log_prior_prop <- log(dinvgamma(proposta_sigma, rate = d, shape = a))
+      log_prior_atual <- log(dinvgamma(sigma_atual, rate = d, shape = a))
+      
+      # log_razao = log(P(novo)) - log(P(velho)) + log(q_ratio)
+      # Onde q_ratio para lognormal é (proposta_sigma / sigma_atual)
+      log_razao_sigma <- log_prior_prop - log_prior_atual + log(proposta_sigma / sigma_atual)
+      
+      if (!is.na(log_razao_sigma) && log(runif(1)) < log_razao_sigma) {
+        post[[i]][j, 2] <- proposta_sigma
+      } else {
+        post[[i]][j, 2] <- sigma_atual
+      }
+    }
+  }
+
+  if(burnin > 0 && burnin < n_total) {
+    for(i in 1:n_cadeias) {
+      post[[i]] <- post[[i]][-(1:burnin), ]
+    }
+  }
+  
+  return(post)
+}
+```
+
+#### g) Os dois algoritmos forneceram boas aproximações da distribuição a posteriori exatas? Justifique.
