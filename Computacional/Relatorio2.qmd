@@ -17,9 +17,9 @@ echo: false
 
 No decorrer do Trabalho, foram utilizados os seguintes valores para os parâmetros:
 
--   $µ = 10$
+- $µ = 10$
 
--   $σ^2 = 4$
+- $σ^2 = 4$
 
 ```{r}
 # Gerando uma Amostra
@@ -88,15 +88,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 |---------|-----------|---------------|----------|------------|
 | $9.974$ | $3.595$   | $1.896$       | $-0.191$ | $0.032$    |
 
--   **Média-** Próxima do valor real $µ = 10$
+- **Média-** Próxima do valor real $µ = 10$
 
--   **Variância-** Próxima do valor real $σ^2 = 4$
+- **Variância-** Próxima do valor real $σ^2 = 4$
 
--   **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
+- **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
 
--   **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
+- **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
 
--   **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
+- **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
 
 #### b) Construção da sua distribuição a priori: Construa sua distribuição a priori conjugada natural para $(µ,σ^2)$ tal que a distribuição para $µ$ seja centrada no valor real para a média populacional (o valor usando na geração dos dados) e que seja pouco informativa (isto é tenha uma variância grande) e que a distribuição para $σ^2$ seja pouco informativa. Faça o gráfico das distribuições a priori para $µ$ e $σ^2$. Calcule a média e a variância a priori para $µ$ e $σ^2$.
 
@@ -104,15 +104,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 
 A família de distribuições para $(µ, σ^2)$ que é conjugada natural da família $Normal( µ,σ^2)$ com ambos os parâmetros desconhecidos é:
 
--   $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
+- $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
 
--   $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
+- $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
 
 **Escolhendo valores para os parâmetros das distribuições de** $µ$ **e** $σ^2$
 
--   $µ ∼ t - Student(10, 250, 8.128, 4.032)$
+- $µ ∼ t - Student(10, 250, 8.128, 4.032)$
 
--   $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
+- $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
 
 Os parâmetros foram escolhidos de modo que ambas as distribuições a priori estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
 
@@ -131,9 +131,9 @@ var_mu <- a*V/(d-2)
 
 ```
 
--   $E(µ) = m = 10$
+- $E(µ) = m = 10$
 
--   $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
+- $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
 
 **Cálculo da Média e Variância de** $σ^2$
 
@@ -143,24 +143,24 @@ media_sig <- a/(d-2)
 var_sig <- 2*(a^2)/((d-4)*(d-2)^2)
 ```
 
--   $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
+- $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
 
--   $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
+- $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
 
 **Resumo**
 
 | Parâmetro | Distribuição a Priori | Média a Priori | Variância a Priori |
-|-------------|-------------------------|----------------|-----------------|
+|----|----|----|----|
 | $µ$ | t-Student(10, 8.128, 250, 4.032) | $10$ | $1000$ |
 | $σ^2$ | Gama-Inversa(8.128, 4.032) | $4$ | $1000$ |
 
 A tabela confirma que as distribuições a priori são não informativas e estão centradas nos valores reais de $µ$ e $σ^2$, isto é:
 
--   $E(µ) = E(µ_{real}) = 10$
+- $E(µ) = E(µ_{real}) = 10$
 
--   $E(σ^2) = (σ^2_{real}) = 4$
+- $E(σ^2) = (σ^2_{real}) = 4$
 
--   $Var(µ) = Var(σ^2) = 1000$
+- $Var(µ) = Var(σ^2) = 1000$
 
 **Análise gráfica da distribuição de** $µ$
 
@@ -208,19 +208,19 @@ ggplot() +
 
 As distribuições a posteriori exatas para $µ$ e $σ^2$ são:
 
--   $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
+- $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
 
--   $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
+- $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
 
 em que
 
--   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
+- $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
 
--   $d^* = d + n = 504.032$
+- $d^* = d + n = 504.032$
 
--   $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
+- $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
 
--   $V^* = \frac{V}{nV + 1} = 0.002$
+- $V^* = \frac{V}{nV + 1} = 0.002$
 
 **Cálculo da Média, Moda e Variância de** $µ|x$
 
@@ -267,11 +267,11 @@ moda_da_funcao <- resultado$maximum
 
 ```
 
--   $E(µ|x) = m^* = 9.974$
+- $E(µ|x) = m^* = 9.974$
 
--   $\text{Moda}(\mu|x) = m^* = 9.974$
+- $\text{Moda}(\mu|x) = m^* = 9.974$
 
--   $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
+- $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
 
 **Cálculo da Média, Moda e Variância de** $σ^2|x$
 
@@ -281,16 +281,16 @@ media_sig_post <- a_estrela/(d_estrela-2)
 var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
 ```
 
--   $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
+- $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
 
--   $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.279$
+- $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.279$
 
--   $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
+- $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
 
 **Resumo**
 
 | Parâmetro | Distribuição a Posteriori | Média a Posteriori | Variância a Posteriori | Moda a Posteriori |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | $µ$ | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$ | $0.007$ | $9.974$ |
 | $σ^2$ | Gama-Inversa(1801.805, 504.032) | $3.589$ | $0.051$ | $0.279$ |
 
@@ -348,11 +348,109 @@ Considerando a amostra gerada em **(a)** e a distribuição a priori conjugada n
 
 #### d) Encontre as expressões das funções densidades para $µ | σ^2,x$ e $σ^2 | µ,x$ (Isto é, das distribuições condicionais completas a posteriori.)
 
+Assumindo que:
+
+1.  $\sigma^{2}\sim IG(\alpha_{0},\beta_{0})$
+
+2.  $\mu|\sigma^{2}\sim N(\mu_{0},\sigma^{2}/\kappa_{0})$
+
+A verossimilhança da amostra Normal é: $$L(\mu,\sigma^{2}|x)\propto(\sigma^{2})^{-n/2}\exp\left(-\frac{1}{2\sigma^{2}}\sum_{i=1}^{n}(x_{i}-\mu)^{2}\right)$$
+
+A densidade a posteriori conjunta é proporcional ao produto da verossimilhança pela priori: $$p(\mu,\sigma^{2}|x)\propto L(\mu,\sigma^{2}|x)p(\mu|\sigma^{2})p(\sigma^{2})$$
+
+1.  **Condicional completa para** $\mu$: Isolando apenas os termos que dependem de $\mu$ na distribuição conjunta, obtemos o núcleo de uma distribuição Normal. $$p(\mu|\sigma^{2},x)\sim N(\mu_{n},\sigma^{2}/\kappa_{n})$$
+
+Onde:
+
+$\kappa_{n}=\kappa_{0}+n$
+
+$\mu_{n}=\frac{\kappa_{0}\mu_{0}+n\bar{x}}{\kappa_{0}+n}$
+
+2.  **Condicional completa para** $\sigma^{2}$**:** Isolando os termos que dependem de $\sigma^{2}$ (e tratando $\mu$ como uma constante conhecida), obtemos o núcleo de uma distribuição Gama Inversa. $$p(\sigma^{2}|\mu,x)\sim IG(\alpha_{n}',\beta_{n}')$$
+
+Onde:
+
+$\alpha_{n}'=\alpha_{0}+\frac{n}{2}+\frac{1}{2}$
+
+$\beta_{n}'=\beta_{0}+\frac{1}{2}\sum_{i=1}^{n}(x_{i}-\mu)^{2}+\frac{\kappa_{0}}{2}(\mu-\mu_{0})^{2}$
+
 #### e) Implemente o Amostrador de Gibbs e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias de dois valores inciais distintos, um bem próximo do valor real do parâmetro e outro bem longe. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
+
+```{r}
+#Preparação para fazer as análises de convergência das cadeias e autocorrelação
+x_dados <- rnorm(500, mean = 5, sd = 2) 
+
+n_iter <- 5000
+burn_in <- 1000
+
+inits <- matrix(c(
+  5.1, 4.2, 
+  -20, 50.0 
+), nrow = 2, byrow = TRUE)
+```
+
+```{r}
+library(coda)
+gibbs <- function(x, n_total, burnin, n_cadeias, init, m0, k0, alpha0, beta0) {
+  
+  n <- length(x)
+  x_bar <- mean(x)
+  
+  post <- list()
+  for(i in 1:n_cadeias){
+    post[[i]] <- matrix(nrow = n_total, ncol = 2)
+    colnames(post[[i]]) <- c("mu", "sigma2")
+    post[[i]][1, ] <- init[i, ]
+  }
+  
+  for(i in 1:n_cadeias){
+    for(j in 2:n_total){
+      
+      sigma2_atual <- post[[i]][j-1, 2]
+      kn <- k0 + n
+      mn <- (k0 * m0 + n * x_bar) / kn
+      var_mu <- sigma2_atual / kn
+      
+      mu_novo <- rnorm(1, mean = mn, sd = sqrt(var_mu))
+      post[[i]][j, 1] <- mu_novo
+      alpha_n <- alpha0 + n/2 + 0.5
+      beta_n <- beta0 + 0.5 * sum((x - mu_novo)^2) + 0.5 * k0 * (mu_novo - m0)^2
+      
+      sigma2_novo <- rinvgamma(1, shape = alpha_n, rate = beta_n)
+      post[[i]][j, 2] <- sigma2_novo
+    }
+  }
+  
+  if(burnin > 0 && burnin < n_total) {
+    for(i in 1:n_cadeias) {
+      post[[i]] <- post[[i]][-(1:burnin), ]
+    }
+  }
+  
+  return(post)
+}
+
+amostras_gibbs <- gibbs(x = x_dados, n_total = n_iter, burnin = burn_in, 
+                        n_cadeias = 2, init = inits, 
+                        m0 = 0, k0 = 0.01, alpha0 = 0.01, beta0 = 0.01)
+
+mcmc_gibbs_cadeia1 <- mcmc(amostras_gibbs[[1]])
+mcmc_gibbs_cadeia2 <- mcmc(amostras_gibbs[[2]])
+lista_coda_gibbs <- mcmc.list(mcmc_gibbs_cadeia1, mcmc_gibbs_cadeia2)
+
+plot(lista_coda_gibbs)
+
+autocorr.plot(lista_coda_gibbs)
+
+gelman.diag(lista_coda_gibbs)
+
+summary(lista_coda_gibbs)
+```
 
 #### f) Implemente o Metropolis-Hastings e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias nos mesmos valores inciais considerados no item anterior. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e Compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
 
 ```{r}
+library(coda)
 metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d) {
   
   log_postmu <- function(x, m, V, a, d) {
@@ -410,6 +508,19 @@ metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d) {
   
   return(post)
 }
+
+amostras_mh <- metropolis(n_total = n_iter, burnin = burn_in, 
+                          n_cadeias = 2, init = inits, 
+                          m = 0, V = 100, a = 0.01, d = 0.01)
+
+mcmc_mh_cadeia1 <- mcmc(amostras_mh[[1]])
+mcmc_mh_cadeia2 <- mcmc(amostras_mh[[2]])
+lista_coda_mh <- mcmc.list(mcmc_mh_cadeia1, mcmc_mh_cadeia2)
+
+autocorr.plot(lista_coda_mh)
+gelman.diag(lista_coda_mh)
+rejectionRate(lista_coda_mh)
+summary(lista_coda_mh)
 ```
 
 #### g) Os dois algoritmos forneceram boas aproximações da distribuição a posteriori exatas? Justifique.
