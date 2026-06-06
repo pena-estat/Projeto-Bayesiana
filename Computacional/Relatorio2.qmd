@@ -39,7 +39,7 @@ amostra <- rnorm(500,mu,sigma)
 
 **Análise gráfica da amostra**
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
 library(tidyverse)
 
@@ -65,9 +65,11 @@ ggplot(aes(x=amostra))+
   tema
 ```
 
+Pelo gráfico, nota-se que o formato da curva de densidade da amostra é similar a um sino, indicando que ela é aproximadamente normal. Além disso, também é possível perceber que a distribuição no gráfico está centrada em um valor próximo de 10, o que era de se esperar, dado que a amostra foi gerada de uma Normal com média 10.
+
 **Medidas de dispersão e de forma**
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(e1071)
 
 # Cálculo da media e variancia
@@ -86,9 +88,21 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 |---------|-----------|---------------|----------|------------|
 | $9.974$ | $3.595$   | $1.896$       | $-0.191$ | $0.032$    |
 
+-   **Média-** Próxima do valor real $µ = 10$
+
+-   **Variância-** Próxima do valor real $σ^2 = 4$
+
+-   **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
+
+-   **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
+
+-   **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
+
 #### b) Construção da sua distribuição a priori: Construa sua distribuição a priori conjugada natural para $(µ,σ^2)$ tal que a distribuição para $µ$ seja centrada no valor real para a média populacional (o valor usando na geração dos dados) e que seja pouco informativa (isto é tenha uma variância grande) e que a distribuição para $σ^2$ seja pouco informativa. Faça o gráfico das distribuições a priori para $µ$ e $σ^2$. Calcule a média e a variância a priori para $µ$ e $σ^2$.
 
-As distribuições a priori conjugadas naturais para $µ$ e $σ^2$ são:
+**Definindo a família distribuições para** $(µ, σ^2)$ **conjugada natural**
+
+A família de distribuições para $(µ, σ^2)$ que é conjugada natural da família $Normal( µ,σ^2)$ com ambos os parâmetros desconhecidos é:
 
 -   $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
 
@@ -100,7 +114,7 @@ As distribuições a priori conjugadas naturais para $µ$ e $σ^2$ são:
 
 -   $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
 
-Os parâmetros foram escolhidos de modo que ambas as distribuições estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
+Os parâmetros foram escolhidos de modo que ambas as distribuições a priori estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
 
 **Cálculo da Média e Variância de** $µ$
 
@@ -135,10 +149,18 @@ var_sig <- 2*(a^2)/((d-4)*(d-2)^2)
 
 **Resumo**
 
-| Parâmetro | Distribuição a Priori            | Média a Priori | Variância a Priori |
-|---------------|---------------------------|---------------|---------------|
-| $µ$       | t-Student(10, 8.128, 250, 4.032) | $10$           | $1000$             |
-| $σ^2$     | Gama-Inversa(8.128, 4.032)       | $4$            | $1000$             |
+| Parâmetro | Distribuição a Priori | Média a Priori | Variância a Priori |
+|-------------|-------------------------|----------------|-----------------|
+| $µ$ | t-Student(10, 8.128, 250, 4.032) | $10$ | $1000$ |
+| $σ^2$ | Gama-Inversa(8.128, 4.032) | $4$ | $1000$ |
+
+A tabela confirma que as distribuições a priori são não informativas e estão centradas nos valores reais de $µ$ e $σ^2$, isto é:
+
+-   $E(µ) = E(µ_{real}) = 10$
+
+-   $E(σ^2) = (σ^2_{real}) = 4$
+
+-   $Var(µ) = Var(σ^2) = 1000$
 
 **Análise gráfica da distribuição de** $µ$
 
@@ -172,13 +194,14 @@ ggplot(dados, aes(x = x, y = y)) +
 library(invgamma)
 
 ggplot() +
-  xlim(0,10) +
+  xlim(0,100) +
   geom_function(fun = dinvgamma, args = list(a/2,d/2), size = 1, color = "blue") +
   labs(
     title = "Densidade da Distribuição a Priori de σ2",
     x = "Valor", 
     y = "Densidade"
-  )
+  ) +
+  tema
 ```
 
 #### c) Considerando a distribuição a priori construída no ítem (b) e os dados gerados no ítem (a), determine a distribuição a posteriori exata para $µ$ e $σ^2$. Faça o gráfico das distribuições a posteriori para $µ$ e $σ^2$. Calcule a média, a moda e a variância a posteriori para $µ$ e $σ^2$. Considerando a média a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas. Considerando a moda a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas.
@@ -191,13 +214,13 @@ As distribuições a posteriori exatas para $µ$ e $σ^2$ são:
 
 em que
 
--   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)}$
+-   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
 
--   $d^* = d + n$
+-   $d^* = d + n = 504.032$
 
--   $m^* = \frac{nV\bar{x} + m}{nV+ 1}$
+-   $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
 
--   $V^* = \frac{V}{nV + 1}$
+-   $V^* = \frac{V}{nV + 1} = 0.002$
 
 **Cálculo da Média, Moda e Variância de** $µ|x$
 
@@ -246,7 +269,7 @@ moda_da_funcao <- resultado$maximum
 
 -   $E(µ|x) = m^* = 9.974$
 
--   $\text{Moda}(\mu|x) = 9.974$
+-   $\text{Moda}(\mu|x) = m^* = 9.974$
 
 -   $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
 
@@ -260,16 +283,16 @@ var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
 
 -   $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
 
--   $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.2798$
+-   $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.279$
 
 -   $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
 
 **Resumo**
 
-| Parâmetro | Distribuição a Posteriori                  | Média a Posteriori | Variância a Posteriori |
-|---------------|----------------------------|---------------|---------------|
-| $µ$       | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$            | $0.007$                |
-| $σ^2$     | Gama-Inversa(1801.805, 504.032)            | $3.589$            | $0.051$                |
+| Parâmetro | Distribuição a Posteriori | Média a Posteriori | Variância a Posteriori | Moda a Posteriori |
+|---------------|---------------|---------------|---------------|---------------|
+| $µ$ | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$ | $0.007$ | $9.974$ |
+| $σ^2$ | Gama-Inversa(1801.805, 504.032) | $3.589$ | $0.051$ | $0.279$ |
 
 **Análise gráfica da distribuição de** $µ|x$
 
@@ -298,9 +321,8 @@ ggplot(dados2, aes(x = x, y = y)) +
     title = "Densidade Distribuição a Posteriori de µ",
     x = "Valor",
     y = "Densidade"
-  )
-
-
+  )+
+  tema
 
 ```
 
