@@ -59,9 +59,9 @@ grafico <- function(a, real_par, nome_parametro){
 
 No decorrer do Trabalho, foram utilizados os seguintes valores para os parâmetros:
 
--   $µ = 10$
+- $µ = 10$
 
--   $σ^2 = 4$
+- $σ^2 = 4$
 
 ```{r}
 # Gerando uma Amostra
@@ -130,15 +130,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 |---------|-----------|---------------|----------|------------|
 | $9.974$ | $3.595$   | $1.896$       | $-0.191$ | $0.032$    |
 
--   **Média-** Próxima do valor real $µ = 10$
+- **Média-** Próxima do valor real $µ = 10$
 
--   **Variância-** Próxima do valor real $σ^2 = 4$
+- **Variância-** Próxima do valor real $σ^2 = 4$
 
--   **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
+- **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
 
--   **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
+- **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
 
--   **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
+- **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
 
 #### b) Construção da sua distribuição a priori: Construa sua distribuição a priori conjugada natural para $(µ,σ^2)$ tal que a distribuição para $µ$ seja centrada no valor real para a média populacional (o valor usando na geração dos dados) e que seja pouco informativa (isto é tenha uma variância grande) e que a distribuição para $σ^2$ seja pouco informativa. Faça o gráfico das distribuições a priori para $µ$ e $σ^2$. Calcule a média e a variância a priori para $µ$ e $σ^2$.
 
@@ -146,15 +146,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 
 A família de distribuições para $(µ, σ^2)$ que é conjugada natural da família $Normal( µ,σ^2)$ com ambos os parâmetros desconhecidos é:
 
--   $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
+- $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
 
--   $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
+- $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
 
 **Escolhendo valores para os parâmetros das distribuições de** $µ$ **e** $σ^2$
 
--   $µ ∼ t - Student(10, 250, 8.128, 4.032)$
+- $µ ∼ t - Student(10, 250, 8.128, 4.032)$
 
--   $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
+- $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
 
 Os parâmetros foram escolhidos de modo que ambas as distribuições a priori estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
 
@@ -173,9 +173,9 @@ var_mu <- a*V/(d-2)
 
 ```
 
--   $E(µ) = m = 10$
+- $E(µ) = m = 10$
 
--   $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
+- $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
 
 **Cálculo da Média e Variância de** $σ^2$
 
@@ -185,24 +185,24 @@ media_sig <- a/(d-2)
 var_sig <- 2*(a^2)/((d-4)*(d-2)^2)
 ```
 
--   $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
+- $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
 
--   $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
+- $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
 
 **Resumo**
 
-| Parâmetro | Distribuição a Priori            | Média a Priori | Variância a Priori |
+| Parâmetro | Distribuição a Priori | Média a Priori | Variância a Priori |
 |------------------|------------------|------------------|------------------|
-| $µ$       | t-Student(10, 8.128, 250, 4.032) | $10$           | $1000$             |
-| $σ^2$     | Gama-Inversa(8.128, 4.032)       | $4$            | $1000$             |
+| $µ$ | t-Student(10, 8.128, 250, 4.032) | $10$ | $1000$ |
+| $σ^2$ | Gama-Inversa(8.128, 4.032) | $4$ | $1000$ |
 
 A tabela confirma que as distribuições a priori são não informativas e estão centradas nos valores reais de $µ$ e $σ^2$, isto é:
 
--   $E(µ) = E(µ_{real}) = 10$
+- $E(µ) = E(µ_{real}) = 10$
 
--   $E(σ^2) = (σ^2_{real}) = 4$
+- $E(σ^2) = (σ^2_{real}) = 4$
 
--   $Var(µ) = Var(σ^2) = 1000$
+- $Var(µ) = Var(σ^2) = 1000$
 
 **Análise gráfica da distribuição de** $µ$
 
@@ -250,19 +250,19 @@ ggplot() +
 
 As distribuições a posteriori exatas para $µ$ e $σ^2$ são:
 
--   $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
+- $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
 
--   $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
+- $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
 
 em que
 
--   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
+- $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
 
--   $d^* = d + n = 504.032$
+- $d^* = d + n = 504.032$
 
--   $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
+- $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
 
--   $V^* = \frac{V}{nV + 1} = 0.002$
+- $V^* = \frac{V}{nV + 1} = 0.002$
 
 **Cálculo da Média, Moda e Variância de** $µ|x$
 
@@ -309,11 +309,11 @@ moda_da_funcao <- resultado$maximum
 
 ```
 
--   $E(µ|x) = m^* = 9.974$
+- $E(µ|x) = m^* = 9.974$
 
--   $\text{Moda}(\mu|x) = m^* = 9.974$
+- $\text{Moda}(\mu|x) = m^* = 9.974$
 
--   $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
+- $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
 
 **Cálculo da Média, Moda e Variância de** $σ^2|x$
 
@@ -323,18 +323,18 @@ media_sig_post <- a_estrela/(d_estrela-2)
 var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
 ```
 
--   $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
+- $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
 
--   $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.279$
+- $\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805-1}=0.279$
 
--   $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
+- $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
 
 **Resumo**
 
-| Parâmetro | Distribuição a Posteriori                  | Média a Posteriori | Variância a Posteriori | Moda a Posteriori |
+| Parâmetro | Distribuição a Posteriori | Média a Posteriori | Variância a Posteriori | Moda a Posteriori |
 |---------------|---------------|---------------|---------------|---------------|
-| $µ$       | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$            | $0.007$                | $9.974$           |
-| $σ^2$     | Gama-Inversa(1801.805, 504.032)            | $3.589$            | $0.051$                | $0.279$           |
+| $µ$ | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$ | $0.007$ | $9.974$ |
+| $σ^2$ | Gama-Inversa(1801.805, 504.032) | $3.589$ | $0.051$ | $0.279$ |
 
 **Análise gráfica da distribuição de** $µ|x$
 
@@ -494,7 +494,6 @@ metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d,
                        inc_warmup = FALSE) {
   
   log_postmu <- function(x, m, V, a, d) {
-    # Usando log pq tava dando problema
     constante <- 0.5 * log(1/pi) + lgamma(0.5*d + 0.5) + (d/2)*log(a) - lgamma(d/2) - 0.5*log(V)
     nucleo <- (-0.5*d - 0.5) * log(a + V^(-1) * (x-m)^2)
     return(constante + nucleo)
@@ -511,8 +510,6 @@ metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d,
     for(j in 2:n_total){
       mu_atual <- post[[i]][j-1, 1]
       proposta_mu <- rnorm(1, mean = mu_atual, sd = sqrt(2))
-      # Log pq tava dando problema com numero alto
-      # Era P(novo) / P(antigo)
       log_razao_mu <- log_postmu(proposta_mu, m, V, a, d) - log_postmu(mu_atual, m, V, a, d)
       
       if (!is.na(log_razao_mu) && log(runif(1)) < log_razao_mu) {
@@ -522,14 +519,11 @@ metropolis <- function(n_total, burnin, n_cadeias, init, m, V, a, d,
       }
       
       sigma_atual <- post[[i]][j-1, 2]
-      # Proposta de sigma é uma lognormal
       proposta_sigma <- rlnorm(1, meanlog = log(sigma_atual), sdlog = 0.15)
       
       log_prior_prop <- log(dinvgamma(proposta_sigma, shape = d/2, rate = a/2))
       log_prior_atual <- log(dinvgamma(sigma_atual, shape = d/2, rate = a/2))
       
-      # log_razao = log(P(novo)) - log(P(velho)) + log(q_ratio)
-      # Onde q_ratio para lognormal é (proposta_sigma / sigma_atual)
       log_razao_sigma <- log_prior_prop - log_prior_atual + log(proposta_sigma / sigma_atual)
       
       if (!is.na(log_razao_sigma) && log(runif(1)) < log_razao_sigma) {
@@ -690,5 +684,86 @@ ggplot(df_acf_plot, aes(x = lag, y = acf, fill = Cadeia)) +
 Para as cadeias de $\sigma^2$, a autocorrelação fica em um nível ideal em um lag aproximadamente de 10.
 
 Ao fazer o estudo de autocorrelação para $\sigma^2$ e $\mu$, decidimos manter um lag de 30, pois é onde a autocorrelação é baixa tanto em $\mu$ quanto em $\sigma^2$.
+
+```{r}
+# Aplicando thinning com lag = 30 sobre as amostras já sem burn-in
+lag <- 30
+indices <- seq(1, nrow(mh_mu2), by = lag)
+
+mh_mu_final <- mh_mu2[indices, ]
+mh_sigma2_final <- mh_sigma2_2[indices, ]
+```
+
+##### Comparação com a distribuição analítica
+
+**Para** $\mu$**:**
+
+```{r}
+# Amostra combinada das duas cadeias
+mu_amostras <- c(mh_mu_final[,1], mh_mu_final[,2])
+
+# Estatísticas do MH
+media_mu_mh   <- mean(mu_amostras)
+moda_mu_mh    <- density(mu_amostras)$x[which.max(density(mu_amostras)$y)]
+var_mu_mh     <- var(mu_amostras)
+
+# Gráfico: histograma MH vs curva analítica
+dados_mu_analitica <- data.frame(x = seq(9.5, 10.5, by = 0.001))
+dados_mu_analitica$y <- t_student2(dados_mu_analitica$x, m_estrela, V_estrela, a_estrela, d_estrela)
+
+ggplot() +
+  geom_histogram(aes(x = mu_amostras, y = after_stat(density)),
+                 fill = "royalblue1", color = "black", alpha = 0.5, bins = 40) +
+  geom_line(data = dados_mu_analitica, aes(x = x, y = y),
+            color = "red", linewidth = 1.2) +
+  labs(title = "MH vs Analítica — Posteriori de µ",
+       subtitle = "Histograma: MH | Curva: t-Student analítica",
+       x = "µ", y = "Densidade") +
+  tema
+```
+
+**Para** $\sigma^2$**:**
+
+```{r}
+# Amostra combinada das duas cadeias
+sigma2_amostras <- c(mh_sigma2_final[,1], mh_sigma2_final[,2])
+
+# Estatísticas do MH
+media_sigma2_mh <- mean(sigma2_amostras)
+moda_sigma2_mh  <- density(sigma2_amostras)$x[which.max(density(sigma2_amostras)$y)]
+var_sigma2_mh   <- var(sigma2_amostras)
+
+# Gráfico: histograma MH vs curva analítica
+ggplot() +
+  geom_histogram(aes(x = sigma2_amostras, y = after_stat(density)),
+                 fill = "royalblue1", color = "black", alpha = 0.5, bins = 40) +
+  geom_function(fun = dinvgamma, args = list(shape = d_estrela/2, rate = a_estrela/2),
+                color = "red", linewidth = 1.2) +
+  labs(title = "MH vs Analítica — Posteriori de σ²",
+       subtitle = "Histograma: MH | Curva: Gama-Inversa analítica",
+       x = "σ²", y = "Densidade") +
+  tema
+```
+
+**Tabela comparativa:**
+
+```{r}
+tabela_comp_mh <- data.frame(
+  Parametro   = c("µ", "σ²"),
+  Media_MH    = round(c(media_mu_mh,    media_sigma2_mh),  4),
+  Moda_MH     = round(c(moda_mu_mh,     moda_sigma2_mh),   4),
+  Var_MH      = round(c(var_mu_mh,      var_sigma2_mh),    4),
+  Media_Anali = round(c(media_mu_post,  media_sig_post),   4),
+  Moda_Anali  = round(c(moda_da_funcao, a_estrela/(d_estrela + 1)), 4),
+  Var_Anali   = round(c(var_mu_post,    var_sig_post),     4)
+)
+
+knitr::kable(tabela_comp_mh,
+             col.names = c("Parâmetro",
+                           "Média MH", "Moda MH", "Variância MH",
+                           "Média Analítica", "Moda Analítica", "Variância Analítica"))
+```
+
+A comparação entre as distribuições obtidas pelo algoritmo Metropolis-Hastings e as distribuições analíticas da Parte 1 indica que o algoritmo forneceu uma boa aproximação para ambos os parâmetros. Para \$\\mu\$, o histograma das amostras geradas pelo MH se ajusta bem à curva t-Student analítica, e as estatísticas são praticamente idênticas: média \$9{,}970\$ vs \$9{,}974\$, moda \$9{,}981\$ vs \$9{,}974\$ e variâncias iguais de \$0{,}0072\$. Para \$\\sigma\^2\$, os valores também estão próximos: média \$3{,}565\$ vs \$3{,}589\$, moda \$3{,}459\$ vs \$3{,}568\$ e variância \$0{,}0455\$ vs \$0{,}0515\$. As pequenas discrepâncias observadas são esperadas e decorrem da natureza estocástica do algoritmo, não indicando falha na aproximação.
 
 #### g) Os dois algoritmos forneceram boas aproximações da distribuição a posteriori exatas? Justifique.
