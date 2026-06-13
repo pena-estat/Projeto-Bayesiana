@@ -259,6 +259,8 @@ ggplot(dados, aes(x = x, y = y)) +
   ) +
   tema
 
+O gráfico ilustra justamente a alta incerteza da distribuição a priori, haja vista que, mesmo centrada em 10, sua curva atribui uma probabilidade similar tanto para valores próximos, quanto para valores distantes do central.
+
 Análise gráfica da distribuição de $σ^2$
 
 {r, warning = FALSE}
@@ -267,13 +269,15 @@ library(invgamma)
 ggplot() +
   xlim(0,10)+
   ylim(0,5)+
-  geom_function(fun = dinvgamma, args = list(a/2,d/2), size = 1, color = "blue") +
+  geom_function(fun = dinvgamma, args = list(rate = a/2, shape = d/2), size = 1, color = "blue") +
   labs(
     title = "Densidade da Distribuição a Priori de σ2",
     x = "Valor", 
     y = "Densidade"
   ) +
   tema
+
+A priori traz uma massa de probabilidade próxima do valor real, mas ainda trazendo alguma massa de probabilidade para valores mais distantes, mostrando a incerteza atrelada à informação.
 
 c) Considerando a distribuição a priori construída no ítem (b) e os dados gerados no ítem (a), determine a distribuição a posteriori exata para $µ$ e $σ^2$. Faça o gráfico das distribuições a posteriori para $µ$ e $σ^2$. Calcule a média, a moda e a variância a posteriori para $µ$ e $σ^2$. Considerando a média a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas. Considerando a moda a posteriori como o estimador dos parâmetros $µ$ e $σ^2$ determine o viés das estimativas obtidas.
 
@@ -348,11 +352,11 @@ Cálculo da Média, Moda e Variância de $σ^2|x$
 # Cálculo da media e variância de sigma2 
 media_sig_post <- a_estrela/(d_estrela-2) 
 var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
-moda_sig_post <- d_estrela/(a_estrela + 1)
+moda_sig_post <- a_estrela/(d_estrela + 2)
 
 $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
 
-$\text{Moda}(\sigma^2|x) = \frac{d^*}{a^*+1} = \frac{504.032}{1801.805+1}=0.279$
+$\text{Moda}(\sigma^2|x) = \frac{a^*}{d^*+2} = \frac{504.032}{1801.805+2}=3.561$
 
 $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
 
@@ -386,7 +390,7 @@ $3.589$
 
 $0.051$
 
-$0.279$
+$3.561$
 
 Cálculo do Viés
 
@@ -409,7 +413,7 @@ Moda a posteriori como o estimador dos parâmetros
 
 $Viés(\mu) = 9.974 - 10 = -0.026$
 
-$Viés(\sigma^2) = 0.279 - 4 = -3.721$
+$Viés(\sigma^2) = 3.561 - 4 = -0.493$
 
 Resumo
 
@@ -447,9 +451,9 @@ $0.279$
 
 $-0.411$
 
-$-3.721$
+$-0.493$
 
-É possível notar que a média e a moda a posteriori são bons estimadores para $\mu$, dado que seus valores coincidem e ambos apresentam viés próximo a zero. No entanto, para $\sigma^2$, apenas a média a posteriori se mostra um bom estimador, visto que seu viés é próximo de 0, enquanto o viés da moda a posteriori é aproximadamente 9 vezes maior. Isso pode ser justificado pelo fato da moda levar em consideração apenas o pico da distribuição, ignorando a cauda pesada da gamma-inversa, o que não ocorre com a média.
+É possível notar que a média e a moda a posteriori são ótimos estimadores para $\mu$, dado que seus valores coincidem em 9.974 e ambos apresentam um viés mínimo e próximo a zero, de -0.026. Para o parâmetro $\sigma^2$, observa-se que ambos os estimadores subestimam o valor real de 4. A média a posteriori se mostra um estimador ligeiramente melhor, visto que seu viés de -0.411 é um pouco menor em valor absoluto quando comparado ao viés da moda a posteriori, que é de -0.493. Embora a diferença entre os estimadores de $\sigma^2$ não seja tão discrepante, o fato de a moda apresentar um viés maior, subestimando mais o valor real, ainda pode ser justificado por ela representar apenas o pico da distribuição. Dessa forma, a moda acaba sendo menos sensível à cauda pesada típica da distribuição gamma-inversa, uma característica que é melhor capturada pela média.
 
 Análise gráfica da distribuição de $µ|x$
 
@@ -482,6 +486,8 @@ ggplot(dados2, aes(x = x, y = y)) +
   tema
 
 
+A curva a posteriori está centrada em um valor muito próximo de 10 e atribui uma alta probabilidade para esse valor, assumindo uma incerteza significativamente menor do que a da distribuição a priori.
+
 Análise gráfica da distribuição de $σ^2|x$
 
 {r, warning = FALSE}
@@ -489,13 +495,15 @@ library(invgamma)
 
 ggplot() +
   xlim(0,10) +
-  geom_function(fun = dinvgamma, args = list(a_estrela/2,d_estrela/2), size = 1, color = "blue") +
+  geom_function(fun = dinvgamma, args = list(rate = a_estrela/2, shape = d_estrela/2), size = 1, color = "blue") +
   labs(
     title = "Densidade da Distribuição a Posteriori de σ2",
     x = "Valor", 
     y = "Densidade"
   ) +
   tema
+
+A curva traz a maior parte da sua massa de probabilidade entre 2.5 e 5, onde se encontra o verdadeiro valor do parâmetro, reduzindo a incerteza quando comparada à priori.
 
 Parte 2:
 
@@ -521,13 +529,13 @@ $V^*= \frac{V}{nV + 1}$
 
 $m^*=\frac{nV\bar{x} + m}{nV+ 1}$
 
-Condicional completa para $\sigma^{2}$: Isolando os termos que dependem de $\sigma^{2}$ (e tratando $\mu$ como uma constante conhecida), obtemos o núcleo de uma distribuição Gama Inversa. $$p(\sigma^{2}|\mu,x)\sim IG(\alpha_{n}',\beta_{n}')$$
+Condicional completa para $\sigma^{2}$: Isolando os termos que dependem de $\sigma^{2}$ (e tratando $\mu$ como uma constante conhecida), obtemos o núcleo de uma distribuição Gama Inversa. $$p(\sigma^{2}|\mu,x)\sim Gama - Inversa(a^*,d^*)$$
 
 Onde:
 
-$\alpha_{n}'=\alpha_{0}+\frac{n}{2}+\frac{1}{2}$
+$a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} + \frac{nV + 1}{V}(\mu - \frac{nV\bar{x} + m}{nV + 1})^2$
 
-$\beta_{n}'=\beta_{0}+\frac{1}{2}\sum_{i=1}^{n}(x_{i}-\mu)^{2}+\frac{\kappa_{0}}{2}(\mu-\mu_{0})^{2}$
+$d = d + n + 1$
 
 e) Implemente o Amostrador de Gibbs e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias de dois valores inciais distintos, um bem próximo do valor real do parâmetro e outro bem longe. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
 
@@ -872,3 +880,82 @@ A comparação entre as distribuições obtidas pelo algoritmo Metropolis-Hastin
 
 g) Os dois algoritmos forneceram boas aproximações da distribuição a posteriori exatas? Justifique.
 
+Sim, ambos os algoritmos forneceram excelentes aproximações para as distribuições a posteriori exatas, conseguindo reconstruir com grande precisão as propriedades estocásticas (médias, modas, variâncias e o formato geral das densidades) calculadas analiticamente na Parte 1.
+
+Contudo, embora ambos tenham atingido o objetivo de convergência, eles operam de formas matemáticas distintas, o que se reflete na eficiência de cada um.
+
+1. Amostrador de Gibbs
+
+O Amostrador de Gibbs foi o algoritmo mais eficiente para esse problema.
+
+Justificativa Teórica: Como a priori utilizada foi a conjugada natural (Normal-Gama Inversa), conhecemos explicitamente as distribuições condicionais completas de $\mu \mid \sigma^2,x$ e $\sigma^2 \mid \mu,x$. O Gibbs realiza sorteios diretos dessas distribuições em cada iteração, o que implica taxa de aceitação igual a 100%.
+
+Eficiência Prática: Devido à amostragem direta, a autocorrelação das cadeias caiu praticamente para zero já no lag 1. Dessa forma, não foi necessário aplicar thinning, permitindo o aproveitamento de praticamente todas as iterações após o período de burn-in (cerca de 8000 amostras). Como consequência, as estimativas obtidas foram praticamente idênticas às analíticas, diferindo apenas na terceira ou quarta casa decimal.
+
+2. Algoritmo de Metropolis-Hastings
+
+O algoritmo de Metropolis-Hastings também produziu excelentes aproximações para a distribuição a posteriori, porém com um custo computacional maior.
+
+Justificativa Teórica: Diferentemente do Gibbs, o MH não realiza sorteios diretos das distribuições condicionais. Em vez disso, gera propostas por meio de distribuições auxiliares (Normal para $\mu$ e Log-Normal para $\sigma$) e aceita ou rejeita essas propostas segundo uma probabilidade de aceitação. Como consequência, surgem repetições de estados na cadeia quando propostas são rejeitadas.
+
+Eficiência Prática: Essa característica gerou níveis mais elevados de autocorrelação. Nos diagnósticos realizados, observou-se que a autocorrelação de $\mu$ somente atingiu níveis adequados por volta do lag 30. Assim, foi necessário aplicar thinning, armazenando apenas uma observação a cada 30 iterações, reduzindo significativamente o tamanho efetivo da amostra (Effective Sample Size – ESS).
+
+As pequenas discrepâncias observadas nas estimativas do MH (por exemplo, variância de $\sigma^2$ igual a $0,0455$ frente ao valor analítico de $0,0515$) não representam falhas do método. Elas decorrem apenas da variabilidade inerente ao erro de Monte Carlo associado ao menor tamanho efetivo da amostra.
+
+Caso o número total de iterações fosse aumentado (por exemplo, para 100.000 iterações), as estimativas do MH tenderiam a coincidir praticamente com aquelas obtidas pelo Gibbs e com os valores analíticos.
+
+Comparação entre os métodos
+
+Critério
+
+Amostrador de Gibbs
+
+Metropolis-Hastings
+
+Taxa de aceitação
+
+100%
+
+Variável
+
+Autocorrelação
+
+Muito baixa
+
+Relativamente alta
+
+Necessidade de thinning
+
+Não
+
+Sim
+
+Tamanho efetivo da amostra
+
+Alto
+
+Menor
+
+Precisão das estimativas
+
+Quase idêntica à analítica
+
+Excelente aproximação
+
+Eficiência computacional
+
+Muito alta
+
+Moderada
+
+Aplicabilidade
+
+Modelos conjugados
+
+Modelos conjugados e não conjugados
+
+Conclusão
+
+Os resultados evidenciam que ambos os algoritmos foram capazes de reproduzir adequadamente as distribuições a posteriori exatas. Entretanto, em modelos normais com prioris conjugadas, o Amostrador de Gibbs apresenta desempenho superior devido à possibilidade de amostragem direta das distribuições condicionais completas, produzindo cadeias com baixa autocorrelação e alta eficiência amostral.
+
+Por outro lado, o Metropolis-Hastings demonstra sua grande flexibilidade, sendo capaz de aproximar corretamente distribuições a posteriori mesmo quando as condicionais completas não são conhecidas. Por essa razão, permanece como uma ferramenta fundamental para problemas Bayesianos mais gerais e modelos não conjugados.
