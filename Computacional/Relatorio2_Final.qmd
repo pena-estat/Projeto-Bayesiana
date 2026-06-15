@@ -433,9 +433,9 @@ Considerando a amostra gerada em **(a)** e a distribuição a priori conjugada n
 
 #### d) Encontre as expressões das funções densidades para $µ | σ^2,x$ e $σ^2 | µ,x$ (Isto é, das distribuições condicionais completas a posteriori.)
 
-A verossimilhança da amostra Normal é: $$L(\mu,\sigma^{2}|x)\propto(\sigma^{2})^{-n/2}\exp\left(-\frac{1}{2\sigma^{2}}\sum_{i=1}^{n}(x_{i}-\mu)^{2}\right)$$
+A densidade a posteriori conjunta é proporcional ao produto da verossimilhança pela priori: $$p(\mu,\sigma^{2}|x)\propto L(\mu,\sigma^{2}|x)p(\mu|\sigma^{2})p(\sigma^{2})$$
 
-Assim, a densidade a posteriori conjunta é proporcional ao produto da verossimilhança pela priori: $$p(\mu,\sigma^{2}|x)\propto L(\mu,\sigma^{2}|x)p(\mu|\sigma^{2})p(\sigma^{2})$$
+De modo que a verossimilhança da amostra Normal é: $$L(\mu,\sigma^{2}|x)\propto(\sigma^{2})^{-n/2}\exp\left(-\frac{1}{2\sigma^{2}}\sum_{i=1}^{n}(x_{i}-\mu)^{2}\right)$$
 
 1.  **Condicional completa para** $\mu$: Tratando $\sigma^2$ como uma constante e isolando apenas os termos que dependem de $\mu$ na distribuição conjunta, obtemos o núcleo de uma distribuição Normal. $$p(\mu|\sigma^{2},x)\sim Normal(m^*,V^*\sigma^{2})$$
 
