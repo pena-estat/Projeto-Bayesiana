@@ -371,7 +371,7 @@ vies_moda_sig <- moda_sig_post - media_sig
 | Parâmetro | Valor Real | Média a Posteriori | Moda a Posteriori | Viés da média como estimador | Viés da moda como estimador |
 |------------|------------|------------|------------|------------|------------|
 | $µ$ | $10$ | $9.974$ | $9.974$ | $-0.026$ | $-0.026$ |
-| $σ^2$ | $4$ | $3.589$ | $0.279$ | $-0.411$ | $-0.493$ |
+| $σ^2$ | $4$ | $3.589$ | $3.561$ | $-0.411$ | $-0.493$ |
 
 É possível notar que a média e a moda a posteriori são ótimos estimadores para $\mu$, dado que seus valores coincidem em 9.974 e ambos apresentam um viés mínimo e próximo a zero, de -0.026. Para o parâmetro $\sigma^2$, observa-se que ambos os estimadores subestimam o valor real de 4. A média a posteriori se mostra um estimador ligeiramente melhor, visto que seu viés de -0.411 é um pouco menor em valor absoluto quando comparado ao viés da moda a posteriori, que é de -0.493. Embora a diferença entre os estimadores de $\sigma^2$ não seja tão discrepante, o fato de a moda apresentar um viés maior, subestimando mais o valor real, ainda pode ser justificado por ela representar apenas o pico da distribuição. Dessa forma, a moda acaba sendo menos sensível à cauda pesada típica da distribuição gamma-inversa, uma característica que é melhor capturada pela média.
 
