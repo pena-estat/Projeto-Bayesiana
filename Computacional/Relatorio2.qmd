@@ -533,7 +533,7 @@ Condicional completa para $\sigma^{2}$: Isolando os termos que dependem de $\sig
 
 Onde:
 
-$a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} + \frac{nV + 1}{V}(\mu - \frac{nV\bar{x} + m}{nV + 1})^2$
+$a^* = a + \sum_{i_1}^{n} (x_i - \mu)^2 + \frac{(\mu - m)^2}{V}$
 
 $d = d + n + 1$
 
