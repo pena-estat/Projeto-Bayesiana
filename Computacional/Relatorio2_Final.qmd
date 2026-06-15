@@ -457,7 +457,7 @@ Onde:
 
 -   $a^* = a + \sum_{i_1}^{n} (x_i - \mu)^2 + \frac{(\mu - m)^2}{V}$
 
--   $d = d + n + 1$
+-   $d^* = d + n + 1$
 
 #### e) Implemente o Amostrador de Gibbs e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias de dois valores inciais distintos, um bem próximo do valor real do parâmetro e outro bem longe. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
 
