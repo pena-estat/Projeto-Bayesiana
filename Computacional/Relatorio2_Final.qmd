@@ -59,9 +59,9 @@ grafico <- function(a, real_par, nome_parametro){
 
 No decorrer do Trabalho, foram utilizados os seguintes valores para os parâmetros:
 
--   $µ = 10$
+- $µ = 10$
 
--   $σ^2 = 4$
+- $σ^2 = 4$
 
 ```{r}
 # Gerando uma Amostra
@@ -130,15 +130,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 |---------|-----------|---------------|----------|------------|
 | $9.974$ | $3.595$   | $1.896$       | $-0.191$ | $0.032$    |
 
--   **Média-** Próxima do valor real $µ = 10$
+- **Média-** Próxima do valor real $µ = 10$
 
--   **Variância-** Próxima do valor real $σ^2 = 4$
+- **Variância-** Próxima do valor real $σ^2 = 4$
 
--   **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
+- **Desvio Padrão-** Próximo do valor real $σ = \sqrt{σ^2} = \sqrt{4} = 2$
 
--   **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
+- **Curtose-** Próxima de 0, indicando que a curva de densidade da amostra é Mesocúrtica, isto é, ela tem achatamento semelhante ao da curva normal
 
--   **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
+- **Assimetria-** Próxima de 0, indicando que a curva de densidade da amostra é simétrica
 
 #### b) Construção da sua distribuição a priori: Construa sua distribuição a priori conjugada natural para $(µ,σ^2)$ tal que a distribuição para $µ$ seja centrada no valor real para a média populacional (o valor usando na geração dos dados) e que seja pouco informativa (isto é tenha uma variância grande) e que a distribuição para $σ^2$ seja pouco informativa. Faça o gráfico das distribuições a priori para $µ$ e $σ^2$. Calcule a média e a variância a priori para $µ$ e $σ^2$.
 
@@ -146,15 +146,15 @@ assim <- sum((amostra - media)^3)/((n-1)*desvio^3)
 
 A família de distribuições para $(µ, σ^2)$ que é conjugada natural da família $Normal( µ,σ^2)$ com ambos os parâmetros desconhecidos é:
 
--   $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
+- $µ ∼ t - Student(m, V, a, d)$, tal que $m ∈ R, V > 0, a > 0, d > 0$
 
--   $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
+- $σ^2 ∼ Gama − Inversa(a, d)$, tal que $a > 0, d > 0$
 
 **Escolhendo valores para os parâmetros das distribuições de** $µ$ **e** $σ^2$
 
--   $µ ∼ t - Student(10, 250, 8.128, 4.032)$
+- $µ ∼ t - Student(10, 250, 8.128, 4.032)$
 
--   $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
+- $σ^2 ∼ Gama − Inversa(8.128, 4.032)$
 
 Os parâmetros foram escolhidos de modo que ambas as distribuições a priori estão centradas nos valores de $µ$ e $σ^2$ originais, mas possuem uma variância grande, o que as torna pouco informativas.
 
@@ -173,9 +173,9 @@ var_mu <- a*V/(d-2)
 
 ```
 
--   $E(µ) = m = 10$
+- $E(µ) = m = 10$
 
--   $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
+- $V(µ) = \frac{aV}{d − 2} = \frac{8.128*250}{4.032 − 2} = 1000$
 
 **Cálculo da Média e Variância de** $σ^2$
 
@@ -185,24 +185,24 @@ media_sig <- a/(d-2)
 var_sig <- 2*(a^2)/((d-4)*(d-2)^2)
 ```
 
--   $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
+- $E(σ^2) = \frac{a}{d − 2} = \frac{8.128}{4.032 − 2} = 4$
 
--   $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
+- $V(σ^2) = \frac{2a^2}{(d − 2)^2(d − 4)} = \frac{2*8.128^2}{(4.032 − 2)^2(4.032 − 4)} = 1000$
 
 **Resumo**
 
 | Parâmetro | Distribuição a Priori | Média a Priori | Variância a Priori |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | $µ$ | t-Student(10, 8.128, 250, 4.032) | $10$ | $1000$ |
 | $σ^2$ | Gama-Inversa(8.128, 4.032) | $4$ | $1000$ |
 
 A tabela confirma que as distribuições a priori são não informativas e estão centradas nos valores reais de $µ$ e $σ^2$, isto é:
 
--   $E(µ) = E(µ_{real}) = 10$
+- $E(µ) = E(µ_{real}) = 10$
 
--   $E(σ^2) = E(σ^2_{real}) = 4$
+- $E(σ^2) = E(σ^2_{real}) = 4$
 
--   $Var(µ) = Var(σ^2) = 1000$
+- $Var(µ) = Var(σ^2) = 1000$
 
 **Análise gráfica da distribuição de** $µ$
 
@@ -256,19 +256,19 @@ A priori traz uma massa de probabilidade próxima do valor real, mas ainda traze
 
 As distribuições a posteriori exatas para $µ$ e $σ^2$ são:
 
--   $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
+- $µ|x ∼ t - Student(m^*, V^*, a^*, d^*)$, tal que $m^* ∈ R, V^* > 0, a^* > 0, d^* > 0$
 
--   $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
+- $σ^2|x ∼ Gama − Inversa(a^*,d^*)$, tal que $a^* > 0, d^* > 0$
 
 em que
 
--   $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
+- $a^* = a + \sum_{i_1}^{n} x_i^2 + \frac{m^2}{V} - \frac{(nV\bar{x} + m)^2}{V(nV+ 1)} = 1801.805$
 
--   $d^* = d + n = 504.032$
+- $d^* = d + n = 504.032$
 
--   $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
+- $m^* = \frac{nV\bar{x} + m}{nV+ 1} = 9.974$
 
--   $V^* = \frac{V}{nV + 1} = 0.002$
+- $V^* = \frac{V}{nV + 1} = 0.002$
 
 **Cálculo da Média, Moda e Variância de** $µ|x$
 
@@ -314,11 +314,11 @@ moda_mu_post <- otim_mu$maximum
 
 ```
 
--   $E(µ|x) = m^* = 9.974$
+- $E(µ|x) = m^* = 9.974$
 
--   $\text{Moda}(\mu|x) = m^* = 9.974$
+- $\text{Moda}(\mu|x) = m^* = 9.974$
 
--   $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
+- $V(µ|x) = \frac{a^*V^*}{d^* − 2} = \frac{1801.805*0.002}{504.032 − 2} = 0.007$
 
 **Cálculo da Média, Moda e Variância de** $σ^2|x$
 
@@ -329,16 +329,16 @@ var_sig_post <- 2*(a_estrela^2)/((d_estrela-4)*(d_estrela-2)^2)
 moda_sig_post <- a_estrela/(d_estrela + 2)
 ```
 
--   $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
+- $E(σ^2|x) = \frac{a^*}{d^* − 2} = \frac{1801.805}{504.032 − 2} = 3.589$
 
--   $\text{Moda}(\sigma^2|x) = \frac{a^*}{d^*+2} = \frac{504.032}{1801.805+2}=3.561$
+- $\text{Moda}(\sigma^2|x) = \frac{a^*}{d^*+2} = \frac{504.032}{1801.805+2}=3.561$
 
--   $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
+- $V(σ^2|x) = \frac{2(a^*)^2}{(d^* − 2)^2(d^* − 4)} = \frac{2*1801.805^2}{(504.032 − 2)^2(504.032 − 4)} = 0.051$
 
 **Resumo**
 
 | Parâmetro | Distribuição a Posteriori | Média a Posteriori | Variância a Posteriori | Moda a Posteriori |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | $µ$ | t-Student(9.974, 1801.805, 0.002, 504.032) | $9.974$ | $0.007$ | $9.974$ |
 | $σ^2$ | Gama-Inversa(1801.805, 504.032) | $3.589$ | $0.051$ | $3.561$ |
 
@@ -356,20 +356,20 @@ vies_moda_sig <- moda_sig_post - media_sig
 
 **Média a posteriori como o estimador dos parâmetros**
 
--   $Viés(\mu) = 9.974 - 10 = -0.026$
+- $Viés(\mu) = 9.974 - 10 = -0.026$
 
--   $Viés(\sigma^2) = 3.589 - 4 = -0.411$
+- $Viés(\sigma^2) = 3.589 - 4 = -0.411$
 
 **Moda a posteriori como o estimador dos parâmetros**
 
--   $Viés(\mu) = 9.974 - 10 = -0.026$
+- $Viés(\mu) = 9.974 - 10 = -0.026$
 
--   $Viés(\sigma^2) = 3.561 - 4 = -0.493$
+- $Viés(\sigma^2) = 3.561 - 4 = -0.493$
 
 **Resumo**
 
 | Parâmetro | Valor Real | Média a Posteriori | Moda a Posteriori | Viés da média como estimador | Viés da moda como estimador |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | $µ$ | $10$ | $9.974$ | $9.974$ | $-0.026$ | $-0.026$ |
 | $σ^2$ | $4$ | $3.589$ | $3.561$ | $-0.411$ | $-0.493$ |
 
@@ -441,17 +441,17 @@ De modo que a verossimilhança da amostra Normal é: $$L(\mu,\sigma^{2}|x)\propt
 
 Onde:
 
--   $V^*= \frac{V}{nV + 1}$
+- $V^*= \frac{V}{nV + 1}$
 
--   $m^*=\frac{nV\bar{x} + m}{nV+ 1}$
+- $m^*=\frac{nV\bar{x} + m}{nV+ 1}$
 
 2.  **Condicional completa para** $\sigma^{2}$**:** Tratando $\mu$ como uma constante e isolando os termos que dependem de $\sigma^{2}$ (e tratando $\mu$ como uma constante conhecida), obtemos o núcleo de uma distribuição Gama Inversa. $$p(\sigma^{2}|\mu,x)\sim Gama - Inversa(a^*,d^*)$$
 
 Onde:
 
--   $a^* = a + \sum_{i=1}^{n} (x_i - \mu)^2 + \frac{(\mu - m)^2}{V}$
+- $a^* = a + \sum_{i=1}^{n} (x_i - \mu)^2 + \frac{(\mu - m)^2}{V}$
 
--   $d^* = d + n + 1$
+- $d^* = d + n + 1$
 
 #### e) Implemente o Amostrador de Gibbs e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias de dois valores inciais distintos, um bem próximo do valor real do parâmetro e outro bem longe. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
 
@@ -467,61 +467,260 @@ inits <- matrix(c(
 
 ```{r}
 library(coda)
-gibbs <- function(x, n_total, burnin, n_cadeias, init, m0, k0, alpha0, beta0) {
+library(invgamma)
+
+gibbs <- function(x, n_total, burnin, n_cadeias, init, m, V, a, d, inc_warmup = FALSE) {
   
   n <- length(x)
   x_bar <- mean(x)
   
+  # Constantes deduzidas para as condicionais completas
+  m_estrela <- (n * V * x_bar + m) / (n * V + 1)
+  V_estrela <- V / (n * V + 1)
+  d_cond <- d + n + 1
+  
   post <- list()
   for(i in 1:n_cadeias){
     post[[i]] <- matrix(nrow = n_total, ncol = 2)
-    colnames(post[[i]]) <- c("mu", "sigma2")
+    colnames(post[[i]]) <- c("mu", "sigma")
     post[[i]][1, ] <- init[i, ]
   }
   
   for(i in 1:n_cadeias){
     for(j in 2:n_total){
       
+      # 1. Amostra mu
       sigma2_atual <- post[[i]][j-1, 2]
-      kn <- k0 + n
-      mn <- (k0 * m0 + n * x_bar) / kn
-      var_mu <- sigma2_atual / kn
-      
-      mu_novo <- rnorm(1, mean = mn, sd = sqrt(var_mu))
+      var_mu <- V_estrela * sigma2_atual
+      mu_novo <- rnorm(1, mean = m_estrela, sd = sqrt(var_mu))
       post[[i]][j, 1] <- mu_novo
-      alpha_n <- alpha0 + n/2 + 0.5
-      beta_n <- beta0 + 0.5 * sum((x - mu_novo)^2) + 0.5 * k0 * (mu_novo - m0)^2
       
-      sigma2_novo <- rinvgamma(1, shape = alpha_n, rate = beta_n)
+      # 2. Amostra sigma2
+      a_cond <- a + sum((x - mu_novo)^2) + ((mu_novo - m)^2) / V
+      sigma2_novo <- rinvgamma(1, shape = d_cond / 2, rate = a_cond / 2)
       post[[i]][j, 2] <- sigma2_novo
     }
   }
   
-  if(burnin > 0 && burnin < n_total) {
-    for(i in 1:n_cadeias) {
-      post[[i]] <- post[[i]][-(1:burnin), ]
+  if(inc_warmup == FALSE){
+    if(burnin > 0 && burnin < n_total) {
+      for(i in 1:n_cadeias) {
+        post[[i]] <- post[[i]][-(1:burnin), ]
+      }
     }
+    return(post)
+  } else {
+    return(post)
   }
-  
-  return(post)
 }
 
 amostras_gibbs <- gibbs(x = amostra, n_total = n_iter, burnin = burn_in, 
                         n_cadeias = 2, init = inits, 
-                        m0 = 0, k0 = 0.01, alpha0 = 0.01, beta0 = 0.01)
+                        m = m, V = V, a = a, d = d, inc_warmup = TRUE)
 
-mcmc_gibbs_cadeia1 <- mcmc(amostras_gibbs[[1]])
-mcmc_gibbs_cadeia2 <- mcmc(amostras_gibbs[[2]])
-lista_coda_gibbs <- mcmc.list(mcmc_gibbs_cadeia1, mcmc_gibbs_cadeia2)
+gibbs_mu <- data.frame(
+  mu1 = amostras_gibbs[[1]][,1],
+  mu2 = amostras_gibbs[[2]][,1]
+)
 
-plot(lista_coda_gibbs)
-
-autocorr.plot(lista_coda_gibbs)
-
-gelman.diag(lista_coda_gibbs)
-
-summary(lista_coda_gibbs)
+gibbs_sigma2 <- data.frame(
+  sigma1 = amostras_gibbs[[1]][,2],
+  sigma2 = amostras_gibbs[[2]][,2]
+)
 ```
+
+##### Estudo para $\mu$:
+
+Visualização das cadeias da amostra gerada da posteriori para $\mu$ incluindo o burn-in:
+
+```{r}
+grafico(gibbs_mu, 10, "Mu")
+```
+
+É possível visualizar que, por se tratar do amostrador de Gibbs (onde as amostras são retiradas diretamente das distribuições exatas), a cadeia estabiliza de forma quase imediata, muito antes da iteração 500. Utilizando um burn-in de 1000 iterações, assim fica o gráfico da cadeia de $\mu$:
+
+```{r}
+gibbs_mu2 <- gibbs_mu[-(1:burn_in),]
+grafico(gibbs_mu2, 10, "Mu")
+```
+
+Fazendo apenas a análise do gráfico das cadeias de $\mu$, não temos nenhuma evidência de que a cadeia não convergiu. Realizando o teste de Gelman-Rubin para convergência das cadeias, temos que:
+
+```{r, echo=FALSE, include=FALSE}
+lista_mu_gibbs <- mcmc.list(list(mcmc(gibbs_mu2[,1]), mcmc(gibbs_mu2[,2])))
+gelman.diag(lista_mu_gibbs)
+```
+
+| Estimativa Pontual | Limite Superior do Intervalo de Confiança |
+|--------------------|-------------------------------------------|
+| 1                  | 1                                         |
+
+Como o gráfico não traz nenhum indício de que as cadeias não convergiram, e o teste de Gelman-Rubin nos deu uma estimativa pontual cravada em 1, nós temos um forte indício de que a cadeia convergiu perfeitamente para a distribuição a posteriori de $\mu$.
+
+##### Estudo para $\sigma^2$:
+
+Visualização das cadeias da amostra gerada da posteriori para $\sigma^2$ incluindo o burn-in:
+
+```{r}
+grafico(gibbs_sigma2, 4, "Sigma2")
+```
+
+Novamente, é possível visualizar que a cadeia estabiliza de forma extremamente rápida. Utilizando um burn-in de 1000 iterações, assim fica o gráfico da cadeia de $\sigma^2$:
+
+```{r}
+gibbs_sigma2_2 <- gibbs_sigma2[-(1:burn_in),]
+grafico(gibbs_sigma2_2, 4, "Sigma2")
+```
+
+Fazendo a análise do gráfico das cadeias de $\sigma^2$, não temos nenhuma evidência de que a cadeia não convergiu. Realizando o teste de Gelman-Rubin para convergência das cadeias, temos que:
+
+```{r, echo=FALSE, include=FALSE}
+lista_sigma2_gibbs <- mcmc.list(list(mcmc(gibbs_sigma2_2[,1]), mcmc(gibbs_sigma2_2[,2])))
+gelman.diag(lista_sigma2_gibbs)
+```
+
+| Estimativa Pontual | Limite Superior do Intervalo de Confiança |
+|--------------------|-------------------------------------------|
+| 1                  | 1                                         |
+
+Assim como em $\mu$, a estimativa pontual de 1 do teste de Gelman-Rubin reforça fortemente a convergência das cadeias para a distribuição a posteriori de $\sigma^2$.
+
+**Realizando o estudo de autocorrelação das cadeias de** $\mu$ **e** $\sigma^2$
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(forecast)
+
+df_acf_gibbs_mu <- data.frame(
+  Cadeia1 = as.vector(lista_mu_gibbs[[1]]),
+  Cadeia2 = as.vector(lista_mu_gibbs[[2]])
+) %>%
+  pivot_longer(everything(), names_to = "Cadeia", values_to = "valor")
+
+calcular_acf <- function(x) {
+  res <- acf(x, plot = FALSE, lag.max = 50)
+  data.frame(lag = res$lag, acf = res$acf)
+}
+
+df_acf_plot_mu <- df_acf_gibbs_mu %>%
+  group_by(Cadeia) %>%
+  do(calcular_acf(.$valor))
+
+ggplot(df_acf_plot_mu, aes(x = lag, y = acf, fill = Cadeia)) +
+  geom_col(width = 0.7, position = "dodge") +
+  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = c(0.1, -0.1), linetype = "dashed", color = "red") + 
+  facet_wrap(~Cadeia) +
+  theme_minimal() +
+  labs(title = "Autocorrelação das Cadeias Gibbs (Mu)", y = "ACF", x = "Lag")
+```
+
+Para as cadeias de $\mu$ no Amostrador de Gibbs, a autocorrelação despenca e fica em um nível ideal logo no lag 1.
+
+```{r}
+df_acf_gibbs_sig <- data.frame(
+  Cadeia1 = as.vector(lista_sigma2_gibbs[[1]]),
+  Cadeia2 = as.vector(lista_sigma2_gibbs[[2]])
+) %>%
+  pivot_longer(everything(), names_to = "Cadeia", values_to = "valor")
+
+df_acf_plot_sig <- df_acf_gibbs_sig %>%
+  group_by(Cadeia) %>%
+  do(calcular_acf(.$valor))
+
+ggplot(df_acf_plot_sig, aes(x = lag, y = acf, fill = Cadeia)) +
+  geom_col(width = 0.7, position = "dodge") +
+  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = c(0.1, -0.1), linetype = "dashed", color = "red") + 
+  facet_wrap(~Cadeia) +
+  theme_minimal() +
+  labs(title = "Autocorrelação das Cadeias Gibbs (Sigma2)", y = "ACF", x = "Lag")
+```
+
+Para as cadeias de $\sigma^2$, o comportamento é idêntico: a autocorrelação é nula quase que imediatamente.Diferente do algoritmo Metropolis-Hastings, o Amostrador de Gibbs gera amostras diretamente das condicionais exatas, resultando em uma taxa de aceitação de 100% e, consequentemente, correlação mínima entre as iterações. Dessa forma, decidimos utilizar um lag igual a 1 (ou seja, não aplicaremos nenhum thinning descarte, aproveitando toda a amostra gerada após o burn-in).
+
+```{r}
+# Aplicando thinning nulo (lag = 1) sobre as amostras já sem burn-in
+lag_gibbs <- 1
+indices_gibbs <- seq(1, nrow(gibbs_mu2), by = lag_gibbs)
+
+gibbs_mu_final <- gibbs_mu2[indices_gibbs, ]
+gibbs_sigma2_final <- gibbs_sigma2_2[indices_gibbs, ]
+```
+
+##### Comparação com a distribuição analítica
+
+**Para** $\mu$**:**
+
+```{r}
+# Amostra combinada das duas cadeias
+mu_amostras_gibbs <- c(gibbs_mu_final[,1], gibbs_mu_final[,2])
+
+# Estatísticas do Gibbs
+media_mu_gibbs   <- mean(mu_amostras_gibbs)
+moda_mu_gibbs    <- density(mu_amostras_gibbs)$x[which.max(density(mu_amostras_gibbs)$y)]
+var_mu_gibbs     <- var(mu_amostras_gibbs)
+
+# Gráfico: histograma Gibbs vs curva analítica
+dados_mu_analitica <- data.frame(x = seq(9.5, 10.5, by = 0.001))
+dados_mu_analitica$y <- t_student2(dados_mu_analitica$x, m_estrela, V_estrela, a_estrela, d_estrela)
+
+ggplot() +
+  geom_histogram(aes(x = mu_amostras_gibbs, y = after_stat(density)),
+                 fill = "royalblue1", color = "black", alpha = 0.5, bins = 40) +
+  geom_line(data = dados_mu_analitica, aes(x = x, y = y),
+            color = "red", linewidth = 1.2) +
+  labs(title = "Gibbs vs Analítica — Posteriori de µ",
+       subtitle = "Histograma: Gibbs | Curva: t-Student analítica",
+       x = "µ", y = "Densidade") +
+  tema
+```
+
+**Para** $\sigma^2$**:**
+
+```{r}
+# Amostra combinada das duas cadeias
+sigma2_amostras_gibbs <- c(gibbs_sigma2_final[,1], gibbs_sigma2_final[,2])
+
+# Estatísticas do Gibbs
+media_sigma2_gibbs <- mean(sigma2_amostras_gibbs)
+moda_sigma2_gibbs  <- density(sigma2_amostras_gibbs)$x[which.max(density(sigma2_amostras_gibbs)$y)]
+var_sigma2_gibbs   <- var(sigma2_amostras_gibbs)
+
+# Gráfico: histograma Gibbs vs curva analítica
+ggplot() +
+  geom_histogram(aes(x = sigma2_amostras_gibbs, y = after_stat(density)),
+                 fill = "royalblue1", color = "black", alpha = 0.5, bins = 40) +
+  geom_function(fun = dinvgamma, args = list(shape = d_estrela/2, rate = a_estrela/2),
+                color = "red", linewidth = 1.2) +
+  labs(title = "Gibbs vs Analítica — Posteriori de σ²",
+       subtitle = "Histograma: Gibbs | Curva: Gama-Inversa analítica",
+       x = "σ²", y = "Densidade") +
+  tema
+```
+
+**Tabela comparativa:**
+
+```{r}
+tabela_comp_gibbs <- data.frame(
+  Parametro   = c("µ", "σ²"),
+  Media_Gibbs = round(c(media_mu_gibbs,    media_sigma2_gibbs),  4),
+  Moda_Gibbs  = round(c(moda_mu_gibbs,     moda_sigma2_gibbs),   4),
+  Var_Gibbs   = round(c(var_mu_gibbs,      var_sigma2_gibbs),    4),
+  Media_Anali = round(c(media_mu_post,  media_sig_post),   4),
+  Moda_Anali  = round(c(moda_mu_post, a_estrela/(d_estrela + 1)), 4),
+  Var_Anali   = round(c(var_mu_post,    var_sig_post),     4)
+)
+
+knitr::kable(tabela_comp_gibbs,
+             col.names = c("Parâmetro",
+                           "Média Gibbs", "Moda Gibbs", "Variância Gibbs",
+                           "Média Analítica", "Moda Analítica", "Variância Analítica"))
+```
+
+A comparação entre as distribuições obtidas pelo algoritmo de Gibbs e as distribuições analíticas da Parte 1 indica que este método forneceu uma aproximação excepcional e superior em eficiência. Para $\mu$, o histograma se ajusta de maneira quase idêntica à curva analítica, sendo que os valores de média e moda simuladas acompanham na risca os teóricos de $9{,}974$, assim como sua variância. O mesmo rigor de aproximação ocorre para $\sigma^2$, onde os valores simulados empatam com os resultados obtidos analiticamente. Por reter uma quantidade muito maior de amostras efetivas (Effective Sample Size), já que não precisou de thinning, o erro de simulação de Monte Carlo pelo Gibbs foi irrisório.
 
 #### f) Implemente o Metropolis-Hastings e obtenha amostras das distribuições a posterior para $µ$ e $σ^2$. Inicie as cadeias nos mesmos valores inciais considerados no item anterior. Faça uma análise da convergência das cadeias e da autocorrelação. Considere uma amostra com baixa correlação entre os valores gerados e Compare a distribuição obtida usando este amostrador e a distribuição analítica obtida na Parte 1 (Compare os gráficos das distribuições, as médias, modas e variâncias.
 
@@ -715,7 +914,7 @@ ggplot(df_acf_plot, aes(x = lag, y = acf, fill = Cadeia)) +
   geom_hline(yintercept = c(0.1, -0.1), linetype = "dashed", color = "red") + # Intervalo de confiança
   facet_wrap(~Cadeia) +
   theme_minimal() +
-  labs(title = "Autocorrelação das Cadeias (Mu)", y = "ACF", x = "Lag")
+  labs(title = "Autocorrelação das Cadeias (Sigma2)", y = "ACF", x = "Lag")
 ```
 
 Para as cadeias de $\sigma^2$, a autocorrelação fica em um nível ideal em um lag aproximadamente de 10.
@@ -832,7 +1031,7 @@ Caso o número total de iterações fosse aumentado (por exemplo, para 100.000 i
 #### Comparação entre os métodos
 
 | Critério | Amostrador de Gibbs | Metropolis-Hastings |
-|:-----------------------|:-----------------------|:-----------------------|
+|:---|:---|:---|
 | Taxa de aceitação | 100% | Variável |
 | Autocorrelação | Muito baixa | Relativamente alta |
 | Necessidade de *thinning* | Não | Sim |
